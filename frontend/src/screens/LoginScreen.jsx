@@ -5,235 +5,350 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Image
+  Image,
+  SafeAreaView,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import colors from '../styles/colors';
-import ScreenContainer from '../components/common/ScreenContainer';
 
 export default function LoginScreen({ navigation }) {
   const route = useRoute();
   const { role } = route.params || {};
   const isAdmin = role === 'admin';
+
   const themeColors = {
     primary: isAdmin ? colors.secondary : colors.primary,
     text: colors.text,
     textSoft: colors.textSoft,
-    inputBg: colors.inputBg,
-    border: colors.border,
     white: colors.white,
-    background: colors.background,
   };
+
   const logoSource = isAdmin
     ? require('../../assets/images/agricultor-logo.png')
     : require('../../assets/images/logo-harbest.png');
+
   return (
-    <ScreenContainer>
-      <View style={styles.container}>
-        <View style={styles.logoWrapper}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <Image
-              source={logoSource}
-              style={styles.logoImage}
-            />
-          </TouchableOpacity>
-        </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={[styles.container, { backgroundColor: themeColors.primary }]}>
+        {/* CABECERA */}
+        <View style={styles.topSection}>
+          <View style={styles.topRow}>
+            <TouchableOpacity onPress={() => navigation.navigate('Splash')}>
+              <Ionicons name="arrow-back" size={22} color="#fff" />
+            </TouchableOpacity>
 
-        <View style={styles.content}>
-          <Text style={styles.title}>Iniciar sesión</Text>
-
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor={colors.textSoft}
-          />
-
-          <View style={styles.passwordWrapper}>
-            <TextInput
-              style={styles.passwordInput}
-              placeholder="Contraseña"
-              placeholderTextColor={colors.textSoft}
-              secureTextEntry
-            />
-            <Text style={[styles.showText, { color: themeColors.primary }]}>Mostrar</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Splash')}>
+              <Image source={logoSource} style={styles.logoImage} />
+            </TouchableOpacity>
           </View>
 
-          <Text style={[styles.successText, { color: themeColors.primary }]}>¡Validado de forma correcta!</Text>
+          <View style={styles.headerTextBlock}>
+            <Text style={styles.headerMiniText}>
+              {isAdmin ? 'Acceso agricultor' : 'Acceso usuario'}
+            </Text>
+            <Text style={styles.headerTitle}>Iniciar sesión</Text>
+            <Text style={styles.headerSubtitle}>
+              Accede a Harbest y continúa comprando producto fresco y de proximidad.
+            </Text>
+          </View>
+
+          <View style={styles.decorLeafOne} />
+          <View style={styles.decorLeafTwo} />
+        </View>
+
+        {/* TARJETA */}
+        <View style={styles.card}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Correo electrónico</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Introduce tu email"
+              placeholderTextColor={colors.textSoft}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Contraseña</Text>
+            <View style={styles.passwordWrapper}>
+              <TextInput
+                style={styles.passwordInput}
+                placeholder="Introduce tu contraseña"
+                placeholderTextColor={colors.textSoft}
+                secureTextEntry
+              />
+              <TouchableOpacity>
+                <Text style={[styles.showText, { color: themeColors.primary }]}>
+                  Mostrar
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <TouchableOpacity style={styles.forgotWrapper}>
+            <Text style={[styles.forgotText, { color: themeColors.primary }]}>
+              ¿Has olvidado tu contraseña?
+            </Text>
+          </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.mainButton, { backgroundColor: themeColors.primary }]}
             onPress={() => navigation.navigate('Home')}
+            activeOpacity={0.85}
           >
-            <Text style={[styles.mainButtonText, { color: themeColors.white }]}>Iniciar sesión</Text>
+            <Text style={styles.mainButtonText}>Iniciar sesión</Text>
+          </TouchableOpacity>
+
+          <View style={styles.dividerRow}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>o continúa con</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          <TouchableOpacity style={styles.socialButton} activeOpacity={0.85}>
+            <View style={styles.socialIconCircle}>
+              <Text style={styles.socialIconText}>G</Text>
+            </View>
+            <Text style={styles.socialButtonText}>Continuar con Google</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.socialButton} activeOpacity={0.85}>
+            <View style={styles.socialIconCircle}>
+              <Text style={styles.socialIconText}>f</Text>
+            </View>
+            <Text style={styles.socialButtonText}>Continuar con Facebook</Text>
           </TouchableOpacity>
 
           <Text style={styles.registerText}>
             ¿No tienes cuenta?{' '}
-            <Text style={[styles.registerLink, { color: themeColors.primary }]}>Regístrate</Text>
+            <Text style={[styles.registerLink, { color: themeColors.primary }]}>
+              Regístrate
+            </Text>
           </Text>
         </View>
-
-        <View style={styles.landscape}>
-          <View style={styles.hill1} />
-          <View style={styles.hill2} />
-          <View style={styles.hill3} />
-        </View>
-
-        <View style={styles.dots}>
-          <View style={styles.dot} />
-          <View style={[styles.dot, styles.activeDot, { backgroundColor: themeColors.primary }]} />
-          <View style={styles.dot} />
-        </View>
       </View>
-    </ScreenContainer>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+
+  container: {
+    flex: 1,
+  },
+
+  topSection: {
     paddingHorizontal: 24,
+    paddingTop: 18,
+    paddingBottom: 34,
+    position: 'relative',
   },
-  logoWrapper: {
+
+  topRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 42,
-    marginBottom: 28,
+    marginBottom: 26,
   },
+
   logoImage: {
-    width: 90,
-    height: 90,
+    width: 42,
+    height: 42,
     resizeMode: 'contain',
   },
-  logoCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 999,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+
+  headerTextBlock: {
+    paddingRight: 24,
   },
-  logoLeaf: {
-    fontSize: 28,
-    color: colors.white,
+
+  headerMiniText: {
+    color: 'rgba(255,255,255,0.82)',
+    fontSize: 13,
+    fontWeight: '600',
+    marginBottom: 10,
   },
-  content: {
-    paddingHorizontal: 6,
+
+  headerTitle: {
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: '800',
+    marginBottom: 10,
   },
-  title: {
-    fontSize: 22,
+
+  headerSubtitle: {
+    color: 'rgba(255,255,255,0.88)',
+    fontSize: 15,
+    lineHeight: 22,
+    maxWidth: 290,
+  },
+
+  decorLeafOne: {
+    position: 'absolute',
+    right: 24,
+    bottom: 32,
+    width: 52,
+    height: 52,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    transform: [{ rotate: '28deg' }],
+  },
+
+  decorLeafTwo: {
+    position: 'absolute',
+    right: 58,
+    bottom: 50,
+    width: 26,
+    height: 26,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255,255,255,0.10)',
+    transform: [{ rotate: '-20deg' }],
+  },
+
+  card: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    paddingHorizontal: 22,
+    paddingTop: 26,
+    paddingBottom: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+
+  inputGroup: {
+    marginBottom: 14,
+  },
+
+  label: {
+    fontSize: 13,
     fontWeight: '700',
     color: colors.text,
-    marginBottom: 18,
+    marginBottom: 8,
   },
+
   input: {
-    backgroundColor: colors.inputBg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    marginBottom: 12,
+    backgroundColor: '#F3F5ED',
+    borderRadius: 999,
+    paddingHorizontal: 16,
+    paddingVertical: 13,
     fontSize: 14,
     color: colors.text,
   },
+
   passwordWrapper: {
-    backgroundColor: colors.inputBg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    marginBottom: 8,
+    backgroundColor: '#F3F5ED',
+    borderRadius: 999,
+    paddingLeft: 16,
+    paddingRight: 14,
+    paddingVertical: 13,
     flexDirection: 'row',
     alignItems: 'center',
   },
+
   passwordInput: {
     flex: 1,
     fontSize: 14,
     color: colors.text,
   },
+
   showText: {
     fontSize: 12,
-    fontWeight: '600',
-    color: colors.primary,
-  },
-  successText: {
-    fontSize: 12,
-    color: colors.primary,
-    textAlign: 'right',
-    marginBottom: 14,
-  },
-  mainButton: {
-    backgroundColor: colors.primary,
-    borderRadius: 999,
-    paddingVertical: 13,
-    alignItems: 'center',
-    marginBottom: 14,
-  },
-  mainButtonText: {
-    color: colors.white,
-    fontSize: 14,
     fontWeight: '700',
   },
-  registerText: {
-    textAlign: 'center',
-    fontSize: 12,
-    color: colors.textSoft,
-  },
-  registerLink: {
-    color: colors.primary,
-    fontWeight: '700',
-  },
-  landscape: {
-    marginTop: 'auto',
-    height: 120,
-    position: 'relative',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  hill1: {
-    position: 'absolute',
-    bottom: 14,
-    width: 260,
-    height: 55,
-    borderRadius: 999,
-    backgroundColor: '#EAF1D5',
-  },
-  hill2: {
-    position: 'absolute',
-    bottom: 8,
-    left: 15,
-    width: 180,
-    height: 45,
-    borderRadius: 999,
-    backgroundColor: '#EDF4DB',
-    transform: [{ rotate: '-8deg' }],
-  },
-  hill3: {
-    position: 'absolute',
-    bottom: 4,
-    right: 15,
-    width: 180,
-    height: 42,
-    borderRadius: 999,
-    backgroundColor: '#E3ECC8',
-    transform: [{ rotate: '7deg' }],
-  },
-  dots: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 10,
+
+  forgotWrapper: {
+    alignSelf: 'flex-end',
+    marginTop: 2,
     marginBottom: 18,
   },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 999,
-    backgroundColor: colors.dotInactive,
-    marginHorizontal: 4,
+
+  forgotText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
-  activeDot: {
-    backgroundColor: colors.primary,
+
+  mainButton: {
+    borderRadius: 999,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginBottom: 22,
+  },
+
+  mainButtonText: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '800',
+  },
+
+  dividerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 18,
+  },
+
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#E6E6E6',
+  },
+
+  dividerText: {
+    marginHorizontal: 10,
+    fontSize: 12,
+    color: colors.textSoft,
+    fontWeight: '600',
+  },
+
+  socialButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F8F8F5',
+    borderRadius: 999,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    marginBottom: 12,
+  },
+
+  socialIconCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+
+  socialIconText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: colors.text,
+  },
+
+  socialButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.text,
+  },
+
+  registerText: {
+    textAlign: 'center',
+    fontSize: 13,
+    color: colors.textSoft,
+    marginTop: 10,
+  },
+
+  registerLink: {
+    fontWeight: '800',
   },
 });

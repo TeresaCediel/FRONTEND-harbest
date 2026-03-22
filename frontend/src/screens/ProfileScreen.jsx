@@ -22,9 +22,10 @@ export default function ProfileScreen({ navigation }) {
         </View>
 
         <View style={styles.card}>
-          <View style={styles.avatarCircle}>
-            <Text style={styles.avatarText}>P</Text>
-          </View>
+          <Image
+            source={require('../../assets/images/pepe.jpg')}
+            style={styles.avatarImage}
+          />
           <Text style={styles.username}>Pepe27</Text>
 
           <TouchableOpacity style={styles.option}>
@@ -120,6 +121,22 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: '700',
   },
+  avatarImage: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    alignSelf: 'center',
+    marginBottom: 14,
+
+    borderWidth: 3,
+    borderColor: '#fff',
+
+    shadowColor: colors.primaryLight,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 6,
+  },
   username: {
     textAlign: 'center',
     fontSize: 24,
@@ -183,8 +200,8 @@ const styles = StyleSheet.create({
     left: 60,
     right: 60,
     backgroundColor: '#fff',
-    borderRadius: 24,
-    padding: 14,
+    borderRadius: 74,
+    padding: 19,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -194,7 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     width: 40,
     height: 40,
-    borderRadius: 12,
+    borderRadius: 92,
     justifyContent: 'center',
     alignItems: 'center',
   },

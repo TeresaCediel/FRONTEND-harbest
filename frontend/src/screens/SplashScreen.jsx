@@ -3,222 +3,189 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   SafeAreaView,
-  Image
+  Image,
+  ImageBackground,
+  StatusBar,
 } from 'react-native';
 import colors from '../styles/colors';
 
 export default function SplashScreen({ navigation }) {
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.logoWrapper}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Image
-            source={require('../../assets/images/logo-harbest.png')}
-            style={styles.logoImage}
-          />
-        </TouchableOpacity>
-      </View>
+    <ImageBackground
+      source={require('../../assets/images/fondo.png')}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <StatusBar barStyle="dark-content" />
 
-      <View style={styles.content}>
-        <Text style={styles.welcomeText}>Bienvenido a Harbest Online Shop</Text>
-        <Text style={styles.introText}>Descubre productos frescos y naturales. Selecciona tu rol para continuar.</Text>
+      <SafeAreaView style={styles.container}>
+        {/* Capa suave para mejorar contraste */}
+        <View style={styles.overlay}>
+          {/* Logo */}
+          <View style={styles.logoWrapper}>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+              <Image
+                source={require('../../assets/images/logo-harbest.png')}
+                style={styles.logoImage}
+              />
+            </TouchableOpacity>
+          </View>
 
-        <TouchableOpacity
-          style={[styles.roleButton, styles.userButton]}
-          onPress={() => navigation.navigate('Login', { role: 'user' })}
-        >
-          <Text style={styles.roleButtonText}>Soy Usuario</Text>
-        </TouchableOpacity>
+          {/* Contenido superior */}
+          <View style={styles.topContent}>
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>Marketplace agrícola</Text>
+            </View>
 
-        <TouchableOpacity
-          style={[styles.roleButton, styles.adminButton]}
-          onPress={() => navigation.navigate('Login', { role: 'admin' })}
-        >
-          <Text style={styles.roleButtonText}>Soy Agricultor</Text>
-        </TouchableOpacity>
-      </View>
+            <Text style={styles.welcomeText}>
+              Compra fresco,{'\n'}directo del campo
+            </Text>
 
-      <View style={styles.landscape}>
-        <View style={styles.hill1} />
-        <View style={styles.hill2} />
-        <View style={styles.hill3} />
-      </View>
+            <Text style={styles.introText}>
+              Descubre frutas, verduras y especias de proximidad sin intermediarios.
+            </Text>
 
-      <View style={styles.dots}>
-        <View style={styles.dot} />
-        <View style={[styles.dot, styles.activeDot]} />
-        <View style={styles.dot} />
-      </View>
-    </SafeAreaView>
+            <TouchableOpacity
+              style={[styles.roleButton, styles.userButton]}
+              onPress={() => navigation.navigate('Login', { role: 'user' })}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.roleButtonText}>Soy Usuario</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Zona inferior */}
+          <View style={styles.bottomArea}>
+            <TouchableOpacity
+              style={[styles.roleButton, styles.adminButton]}
+              onPress={() => navigation.navigate('Login', { role: 'admin' })}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.roleButtonText}>Soy Agricultor</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.bottomText}>
+              Elige cómo quieres acceder a Harbest
+            </Text>
+          </View>
+        </View>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
+
   container: {
     flex: 1,
-    backgroundColor: colors.background,
-    paddingHorizontal: 24,
   },
+
+  overlay: {
+    flex: 1,
+    paddingHorizontal: 24,
+    backgroundColor: 'rgba(255, 255, 255, 0.10)',
+  },
+
   logoWrapper: {
     alignItems: 'center',
-    marginTop: 42,
-    marginBottom: 28,
+    marginTop: 48,
+    marginBottom: 26,
   },
+
   logoImage: {
-    width: 90,
-    height: 90,
+    width: 92,
+    height: 92,
     resizeMode: 'contain',
   },
-  content: {
-    paddingHorizontal: 6,
+
+  topContent: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    paddingTop: 10,
   },
-  title: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: colors.text,
+
+  badge: {
+    alignSelf: 'center',
+    backgroundColor: 'rgba(255, 250, 223, 0.78)',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 999,
     marginBottom: 18,
   },
-  input: {
-    backgroundColor: colors.inputBg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    marginBottom: 12,
-    fontSize: 14,
+
+  badgeText: {
+    fontSize: 12,
+    fontWeight: '700',
     color: colors.text,
   },
-  passwordWrapper: {
-    backgroundColor: colors.inputBg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    marginBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  passwordInput: {
-    flex: 1,
-    fontSize: 14,
-    color: colors.text,
-  },
-  showText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: colors.primary,
-  },
-  successText: {
-    fontSize: 12,
-    color: colors.primary,
-    textAlign: 'right',
-    marginBottom: 14,
-  },
-  mainButton: {
-    backgroundColor: colors.primary,
-    borderRadius: 999,
-    paddingVertical: 13,
-    alignItems: 'center',
-    marginBottom: 14,
-  },
-  mainButtonText: {
-    color: colors.white,
-    fontSize: 14,
-    fontWeight: '700',
-  },
-  roleButton: {
-    borderRadius: 999,
-    paddingVertical: 13,
-    alignItems: 'center',
-    marginBottom: 14,
-  },
-  userButton: {
-    backgroundColor: colors.primary, // verde
-  },
-  adminButton: {
-    backgroundColor: colors.secondary, // naranja
-  },
-  roleButtonText: {
-    color: colors.white,
-    fontSize: 14,
-    fontWeight: '700',
-  },
+
   welcomeText: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: colors.text,
+    fontSize: 34,
+    lineHeight: 40,
+    fontWeight: '800',
+    color: colors.primaryLight,
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
   },
+
   introText: {
     fontSize: 16,
-    color: colors.textSoft,
+    lineHeight: 23,
+    color: colors.primaryLightTr,
     textAlign: 'center',
-    marginBottom: 24,
+    paddingHorizontal: 10,
+    marginBottom: 26,
   },
-  registerText: {
-    textAlign: 'center',
-    fontSize: 12,
-    color: colors.textSoft,
-  },
-  registerLink: {
-    color: colors.primary,
-    fontWeight: '700',
-  },
-  landscape: {
-    marginTop: 'auto',
-    height: 120,
-    position: 'relative',
-    justifyContent: 'flex-end',
+
+  roleButton: {
+    borderRadius: 999,
+    paddingVertical: 15,
+    paddingHorizontal: 45, 
     alignItems: 'center',
+    alignSelf: 'center', 
   },
-  hill1: {
-    position: 'absolute',
-    bottom: 14,
-    width: 260,
-    height: 55,
-    borderRadius: 999,
-    backgroundColor: '#EAF1D5',
-  },
-  hill2: {
-    position: 'absolute',
-    bottom: 8,
-    left: 15,
-    width: 180,
-    height: 45,
-    borderRadius: 999,
-    backgroundColor: '#EDF4DB',
-    transform: [{ rotate: '-8deg' }],
-  },
-  hill3: {
-    position: 'absolute',
-    bottom: 4,
-    right: 15,
-    width: 180,
-    height: 42,
-    borderRadius: 999,
-    backgroundColor: '#E3ECC8',
-    transform: [{ rotate: '7deg' }],
-  },
-  dots: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 10,
-    marginBottom: 18,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 999,
-    backgroundColor: colors.dotInactive,
-    marginHorizontal: 4,
-  },
-  activeDot: {
+
+  userButton: {
     backgroundColor: colors.primary,
+    marginHorizontal: 10,
+    shadowColor: '#fffccc',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+
+  adminButton: {
+    backgroundColor: colors.secondary,
+    marginHorizontal: 18,
+    shadowColor: '#b9b68f',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.14,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+
+  roleButtonText: {
+    color: colors.primaryLight,
+    fontSize: 15,
+    fontWeight: '800',
+  },
+
+  bottomArea: {
+    paddingBottom: 28,
+    justifyContent: 'flex-end',
+  },
+
+  bottomText: {
+    textAlign: 'center',
+    fontSize: 13,
+    color: colors.textTr,
+    marginTop: 14,
+    fontWeight: '500',
   },
 });
