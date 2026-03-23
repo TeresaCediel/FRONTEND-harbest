@@ -11,6 +11,10 @@ import CategoryFruitsScreen from '../screens/CategoryFruitsScreen';
 import CategoryVegetablesScreen from '../screens/CategoryVegetablesScreen';
 import CategorySpicesScreen from '../screens/CategorySpicesScreen';
 import CategoryAllScreen from '../screens/CategoryAllScreen';
+import FavoritesScreen from '../screens/FavoritesScreen';
+import SearchScreen from '../screens/SearchScreen';
+import CartScreen from '../screens/CartScreen';
+import OrdersScreen from '../screens/OrdersScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +34,10 @@ export default function StackNavigator() {
         <Stack.Screen name="CategoryVegetables" component={CategoryVegetablesScreen} />
         <Stack.Screen name="CategorySpices" component={CategorySpicesScreen} />
         <Stack.Screen name="CategoryAll" component={CategoryAllScreen} />
+        <Stack.Screen name="Favorites" component={FavoritesScreen} />
+        <Stack.Screen name="Search" component={SearchScreen} />
+        <Stack.Screen name="Cart" component={CartScreen} />
+        <Stack.Screen name="Orders" component={OrdersScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

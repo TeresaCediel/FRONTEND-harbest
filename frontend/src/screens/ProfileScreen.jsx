@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import colors from '../styles/colors';
 import ScreenContainer from '../components/common/ScreenContainer';
@@ -8,62 +15,111 @@ export default function ProfileScreen({ navigation }) {
   return (
     <ScreenContainer>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <Ionicons name="arrow-back" size={24} color={colors.text} />
-          </TouchableOpacity>
-          <Text style={styles.title}>Perfil</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          <View style={styles.topSection}>
+            <View style={styles.topRow}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back" size={22} color="#fff" />
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <Image
+                  source={require('../../assets/images/logo-harbest.png')}
+                  style={styles.headerLogo}
+                />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.headerTextBlock}>
+              <Text style={styles.headerMiniText}>Tu espacio personal</Text>
+              <Text style={styles.headerTitle}>Perfil</Text>
+              <Text style={styles.headerSubtitle}>
+                Consulta tus datos, pedidos guardados y accesos rápidos de tu cuenta.
+              </Text>
+            </View>
+
+            <View style={styles.decorLeafOne} />
+            <View style={styles.decorLeafTwo} />
+          </View>
+
+          <View style={styles.profileCard}>
             <Image
-              source={require('../../assets/images/logo-harbest.png')}
-              style={styles.headerLogo}
+              source={require('../../assets/images/pepe.jpg')}
+              style={styles.avatarImage}
             />
-          </TouchableOpacity>
-        </View>
 
-        <View style={styles.card}>
-          <Image
-            source={require('../../assets/images/pepe.jpg')}
-            style={styles.avatarImage}
-          />
-          <Text style={styles.username}>Pepe27</Text>
+            <Text style={styles.username}>Pepe27</Text>
+            <Text style={styles.email}>harbest@alu.ua.es</Text>
 
-          <TouchableOpacity style={styles.option}>
-            <Ionicons name="person-circle-outline" size={18} color={colors.text} style={styles.optionIcon} />
-            <Text style={styles.optionText}>Mis datos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.option, styles.optionActive]}>
-            <Ionicons name="heart-outline" size={18} color={colors.primary} style={styles.optionIcon} />
-            <Text style={[styles.optionText, styles.optionTextActive]}>Mis Favoritos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.option}>
-            <Ionicons name="receipt-outline" size={18} color={colors.text} style={styles.optionIcon} />
-            <Text style={styles.optionText}>Mis Pedidos</Text>
-          </TouchableOpacity>
+            <View style={styles.badgeRow}>
+              <View style={styles.userBadge}>
+                <Text style={styles.userBadgeText}>Cliente Harbest</Text>
+              </View>
+            </View>
+          </View>
 
-          <TouchableOpacity style={styles.helpButton}>
-            <Ionicons name="help-circle-outline" size={18} color={colors.text} style={styles.optionIcon} />
-            <Text style={styles.helpText}>Centro de Ayuda</Text>
-          </TouchableOpacity>
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Cuenta</Text>
 
-          <TouchableOpacity style={styles.logout} onPress={() => navigation.navigate('Login')}>
+            <ProfileOption
+              icon="person-circle-outline"
+              label="Mis datos"
+            />
+
+            <ProfileOption
+              icon="heart-outline"
+              label="Mis favoritos"
+              onPress={() => navigation.navigate('Favorites')}
+            />
+
+            <ProfileOption
+              icon="receipt-outline"
+              label="Mis pedidos"
+              onPress={() => navigation.navigate('Orders')}
+            />
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Soporte</Text>
+
+            <ProfileOption
+              icon="help-circle-outline"
+              label="Centro de ayuda"
+            />
+
+            <ProfileOption
+              icon="settings-outline"
+              label="Ajustes"
+            />
+          </View>
+
+          <TouchableOpacity
+            style={styles.logoutButton}
+            onPress={() => navigation.navigate('Login')}
+            activeOpacity={0.85}
+          >
             <Ionicons name="log-out-outline" size={18} color={colors.primary} />
-            <Text style={styles.logoutText}>Cerrar Sesión</Text>
+            <Text style={styles.logoutText}>Cerrar sesión</Text>
           </TouchableOpacity>
-        </View>
+        </ScrollView>
 
         <View style={styles.bottomBar}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <Ionicons name="search" size={18} color="#8A8A8A" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <Ionicons name="star" size={18} color="#8A8A8A" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <Ionicons name="cart" size={18} color="#8A8A8A" />
+          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+            <Ionicons name="search-outline" size={20} color="#8A8A8A" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.activeButton} onPress={() => navigation.navigate('Profile')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
+            <Ionicons name="heart-outline" size={20} color="#8A8A8A" />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+            <Ionicons name="cart-outline" size={20} color="#8A8A8A" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.activeButton}>
             <Ionicons name="person" size={18} color="#fff" />
           </TouchableOpacity>
         </View>
@@ -72,146 +128,258 @@ export default function ProfileScreen({ navigation }) {
   );
 }
 
+const ProfileOption = ({ icon, label, onPress }) => (
+  <TouchableOpacity
+    style={styles.option}
+    onPress={onPress}
+    activeOpacity={0.85}
+  >
+    <View style={styles.optionLeft}>
+      <View style={styles.optionIconWrap}>
+        <Ionicons name={icon} size={18} color={colors.text} />
+      </View>
+      <Text style={styles.optionText}>{label}</Text>
+    </View>
+
+    <Ionicons name="chevron-forward" size={18} color={colors.textSoft} />
+  </TouchableOpacity>
+);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
-    padding: 16,
-    paddingTop: 20,
+    backgroundColor: '#F7F8F4',
   },
-  header: {
+
+  scrollContent: {
+    paddingBottom: 120,
+  },
+
+  topSection: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: 24,
+    paddingTop: 18,
+    paddingBottom: 34,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    position: 'relative',
+    overflow: 'hidden',
+  },
+
+  topRow: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 26,
   },
-  title: {
-    flex: 1,
-    fontSize: 20,
-    fontWeight: '600',
-    color: colors.text,
-    marginLeft: 16,
-  },
+
   headerLogo: {
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
     resizeMode: 'contain',
   },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  avatarCircle: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: 14,
-  },
-  avatarText: {
-    color: '#fff',
-    fontSize: 36,
-    fontWeight: '700',
-  },
-  avatarImage: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    alignSelf: 'center',
-    marginBottom: 14,
 
+  headerTextBlock: {
+    paddingRight: 30,
+  },
+
+  headerMiniText: {
+    color: 'rgba(255,255,255,0.82)',
+    fontSize: 13,
+    fontWeight: '600',
+    marginBottom: 10,
+  },
+
+  headerTitle: {
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: '800',
+    marginBottom: 10,
+  },
+
+  headerSubtitle: {
+    color: 'rgba(255,255,255,0.88)',
+    fontSize: 15,
+    lineHeight: 22,
+    maxWidth: 290,
+  },
+
+  decorLeafOne: {
+    position: 'absolute',
+    right: 24,
+    bottom: 28,
+    width: 56,
+    height: 56,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    transform: [{ rotate: '28deg' }],
+  },
+
+  decorLeafTwo: {
+    position: 'absolute',
+    right: 60,
+    bottom: 46,
+    width: 28,
+    height: 28,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255,255,255,0.10)',
+    transform: [{ rotate: '-20deg' }],
+  },
+
+  profileCard: {
+    marginHorizontal: 20,
+    marginTop: -18,
+    marginBottom: 24,
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    paddingHorizontal: 20,
+    paddingVertical: 22,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.04,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+
+  avatarImage: {
+    width: 92,
+    height: 92,
+    borderRadius: 46,
+    marginBottom: 14,
     borderWidth: 3,
     borderColor: '#fff',
-
     shadowColor: colors.primaryLight,
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.25,
     shadowRadius: 10,
     elevation: 6,
   },
+
   username: {
-    textAlign: 'center',
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: '800',
+    color: colors.text,
+    marginBottom: 4,
+  },
+
+  email: {
+    fontSize: 13,
+    color: colors.textSoft,
+    marginBottom: 14,
+  },
+
+  badgeRow: {
+    flexDirection: 'row',
+  },
+
+  userBadge: {
+    backgroundColor: '#EEF5E3',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 999,
+  },
+
+  userBadgeText: {
+    color: colors.primary,
+    fontSize: 12,
+    fontWeight: '800',
+  },
+
+  section: {
+    marginHorizontal: 20,
     marginBottom: 20,
   },
+
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: colors.text,
+    marginBottom: 12,
+  },
+
   option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#E2E2E2',
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
+    backgroundColor: '#fff',
+    borderRadius: 18,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
     marginBottom: 10,
-  },
-  optionActive: {
-    backgroundColor: '#E7F0D9',
-    borderColor: '#D8E6BD',
-  },
-  optionText: {
-    color: colors.text,
-    fontWeight: '600',
-  },
-  optionTextActive: {
-    color: colors.primary,
-  },
-  helpButton: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.03,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+
+  optionLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  optionIconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    backgroundColor: '#F3F5ED',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+
+  optionText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.text,
+  },
+
+  logoutButton: {
+    marginHorizontal: 20,
+    backgroundColor: '#fff',
+    borderRadius: 18,
+    paddingVertical: 16,
+    marginTop: 8,
+    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: colors.primary,
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    marginTop: 16,
+    borderColor: '#E7E7E7',
   },
-  helpText: {
-    color: colors.text,
-    fontWeight: '600',
-  },
-  optionIcon: {
-    marginRight: 10,
-  },
-  logout: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
+
   logoutText: {
     marginLeft: 8,
     color: colors.primary,
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 15,
+    fontWeight: '800',
   },
 
   bottomBar: {
     position: 'absolute',
-    bottom: 20,
-    left: 60,
-    right: 60,
+    bottom: 18,
+    left: 32,
+    right: 32,
     backgroundColor: '#fff',
-    borderRadius: 74,
-    padding: 19,
+    borderRadius: 999,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
+    elevation: 6,
   },
 
   activeButton: {
     backgroundColor: colors.primary,
-    width: 40,
-    height: 40,
-    borderRadius: 92,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
   },

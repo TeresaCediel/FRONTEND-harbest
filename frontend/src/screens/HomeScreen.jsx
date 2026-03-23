@@ -175,23 +175,20 @@ export default function HomeScreen({ navigation }) {
 
         {/* BOTTOM BAR */}
         <View style={styles.bottomBar}>
-          <TouchableOpacity>
-            <Ionicons name="search" size={20} color="#8A8A8A" />
+          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+            <Ionicons name="search-outline" size={18} color="#8A8A8A" />
           </TouchableOpacity>
 
-          <TouchableOpacity>
-            <Ionicons name="star" size={20} color="#8A8A8A" />
+          <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
+            <Ionicons name="heart-outline" size={20} color="#8A8A8A" />
           </TouchableOpacity>
 
-          <TouchableOpacity>
-            <Ionicons name="cart" size={20} color="#8A8A8A" />
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+            <Ionicons name="cart-outline" size={20} color="#8A8A8A" />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.activeButton}
-            onPress={() => navigation.navigate('Profile')}
-          >
-            <Ionicons name="person" size={18} color="#fff" />
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+            <Ionicons name="person-outline" size={20} color="#8A8A8A" />
           </TouchableOpacity>
         </View>
       </View>
@@ -505,9 +502,9 @@ const styles = StyleSheet.create({
   },
 
   addButton: {
-    width: 34,
-    height: 34,
-    borderRadius: 12,
+    width: 38,
+    height: 38,
+    borderRadius: 14,
     backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
@@ -515,25 +512,19 @@ const styles = StyleSheet.create({
 
   bottomBar: {
     position: 'absolute',
-    bottom: 18,
-    left: 32,
-    right: 32,
+    bottom: 20,
+    left: 60,
+    right: 60,
     backgroundColor: '#fff',
-    borderRadius: 999,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
+    borderRadius: 74,
+    padding: 19,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
-    elevation: 6,
   },
 
   activeButton: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.white,
     width: 44,
     height: 44,
     borderRadius: 22,
