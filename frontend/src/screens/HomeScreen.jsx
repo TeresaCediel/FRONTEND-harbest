@@ -1,17 +1,16 @@
-import React from 'react';
+import { Ionicons } from "@expo/vector-icons";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
   Image,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import colors from '../styles/colors';
-import ScreenContainer from '../components/common/ScreenContainer';
+import ScreenContainer from "../components/common/ScreenContainer";
+import colors from "../styles/colors";
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -23,7 +22,7 @@ export default function HomeScreen({ navigation }) {
         >
           {/* HEADER */}
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
               <Ionicons
                 name="arrow-back"
                 size={24}
@@ -37,9 +36,9 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.title}>Hola, Pepe</Text>
             </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
               <Image
-                source={require('../../assets/images/logo-harbest.png')}
+                source={require("../../assets/images/logo-harbest.png")}
                 style={styles.logoImage}
               />
             </TouchableOpacity>
@@ -53,16 +52,17 @@ export default function HomeScreen({ navigation }) {
               </View>
 
               <Text style={styles.heroTitle}>
-                Frescura real,{'\n'}directa del campo
+                Frescura real,{"\n"}directa del campo
               </Text>
 
               <Text style={styles.heroSubtitle}>
-                Compra frutas, verduras y especias de proximidad sin intermediarios.
+                Compra frutas, verduras y especias de proximidad sin
+                intermediarios.
               </Text>
             </View>
 
             <Image
-              source={require('../../assets/images/logo-inicio.png')}
+              source={require("../../assets/images/logo-inicio.png")}
               style={styles.heroImage}
             />
           </View>
@@ -100,28 +100,28 @@ export default function HomeScreen({ navigation }) {
               icon="nutrition"
               text="Frutas"
               subtitle="Dulces y frescas"
-              onPress={() => navigation.navigate('CategoryFruits')}
+              onPress={() => navigation.navigate("CategoryFruits")}
             />
             <Category
               color={colors.primary}
               icon="leaf"
               text="Verduras"
               subtitle="Del campo a casa"
-              onPress={() => navigation.navigate('CategoryVegetables')}
+              onPress={() => navigation.navigate("CategoryVegetables")}
             />
             <Category
               color="#C9A46A"
               icon="flame"
               text="Especias"
               subtitle="Aroma y sabor"
-              onPress={() => navigation.navigate('CategorySpices')}
+              onPress={() => navigation.navigate("CategorySpices")}
             />
             <Category
               color="#B8B8B8"
               icon="grid"
               text="Ver todo"
               subtitle="Todo el catálogo"
-              onPress={() => navigation.navigate('CategoryAll')}
+              onPress={() => navigation.navigate("CategoryAll")}
             />
           </View>
 
@@ -129,9 +129,7 @@ export default function HomeScreen({ navigation }) {
           <View style={styles.sectionHeader}>
             <View>
               <Text style={styles.sectionTitle}>Recomendados</Text>
-              <Text style={styles.sectionSubtitle}>
-                Seleccionados para ti
-              </Text>
+              <Text style={styles.sectionSubtitle}>Seleccionados para ti</Text>
             </View>
 
             <TouchableOpacity>
@@ -149,7 +147,7 @@ export default function HomeScreen({ navigation }) {
               name="Naranjas Valencianas"
               seller="Granjas Jaume"
               time="11 min"
-              image={require('../../assets/images/comida/naranjas.webp')}
+              image={require("../../assets/images/comida/naranjas.webp")}
               badge="Fresco"
             />
 
@@ -158,7 +156,7 @@ export default function HomeScreen({ navigation }) {
               name="Aguacates de Granada"
               seller="Illo verdulerías"
               time="45 min"
-              image={require('../../assets/images/comida/aguacate.webp')}
+              image={require("../../assets/images/comida/aguacate.webp")}
               badge="Orgánico"
             />
 
@@ -167,7 +165,7 @@ export default function HomeScreen({ navigation }) {
               name="Pimentón de la Vera"
               seller="Antonio & Co"
               time="2 h"
-              image={require('../../assets/images/comida/pimenton.jpg')}
+              image={require("../../assets/images/comida/pimenton.jpg")}
               badge="Exclusivo"
             />
           </ScrollView>
@@ -175,19 +173,19 @@ export default function HomeScreen({ navigation }) {
 
         {/* BOTTOM BAR */}
         <View style={styles.bottomBar}>
-          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+          <TouchableOpacity onPress={() => navigation.navigate("Search")}>
             <Ionicons name="search-outline" size={18} color="#8A8A8A" />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
+          <TouchableOpacity onPress={() => navigation.navigate("Favorites")}>
             <Ionicons name="heart-outline" size={20} color="#8A8A8A" />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+          <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
             <Ionicons name="cart-outline" size={20} color="#8A8A8A" />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
             <Ionicons name="person-outline" size={20} color="#8A8A8A" />
           </TouchableOpacity>
         </View>
@@ -214,7 +212,7 @@ const ProductCard = ({ navigation, name, seller, time, image, badge }) => (
   <TouchableOpacity
     style={styles.productCard}
     activeOpacity={0.85}
-    onPress={() => navigation.navigate('ProductDetail')}
+    onPress={() => navigation.navigate("ProductDetail")}
   >
     <Image source={image} style={styles.productCardImage} />
 
@@ -234,7 +232,7 @@ const ProductCard = ({ navigation, name, seller, time, image, badge }) => (
 
         <TouchableOpacity
           style={styles.addButton}
-          onPress={() => navigation.navigate('Cart')}
+          onPress={() => navigation.navigate("Cart")}
           activeOpacity={0.85}
         >
           <Ionicons name="add" size={16} color="#fff" />
@@ -247,7 +245,7 @@ const ProductCard = ({ navigation, name, seller, time, image, badge }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F7F8F4',
+    backgroundColor: "#F7F8F4",
   },
 
   scrollContent: {
@@ -258,12 +256,12 @@ const styles = StyleSheet.create({
   logoImage: {
     width: 38,
     height: 38,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
 
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 18,
   },
 
@@ -279,12 +277,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.textSoft,
     marginBottom: 2,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 
   title: {
     fontSize: 24,
-    fontWeight: '800',
+    fontWeight: "800",
     color: colors.text,
   },
 
@@ -295,20 +293,20 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     padding: 20,
     marginBottom: 18,
-    position: 'relative',
-    overflow: 'hidden',
+    position: "relative",
+    overflow: "hidden",
     minHeight: 180,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
 
   heroContent: {
-    width: '62%',
+    width: "62%",
     zIndex: 2,
   },
 
   heroBadge: {
-    alignSelf: 'flex-start',
-    backgroundColor: 'rgba(125, 155, 69, 0.81)',
+    alignSelf: "flex-start",
+    backgroundColor: "rgba(125, 155, 69, 0.81)",
     paddingHorizontal: 12,
     paddingVertical: 7,
     borderRadius: 999,
@@ -318,13 +316,13 @@ const styles = StyleSheet.create({
   heroBadgeText: {
     color: colors.primaryLight,
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: "700",
   },
 
   heroTitle: {
     fontSize: 26,
     lineHeight: 32,
-    fontWeight: '800',
+    fontWeight: "800",
     color: colors.text,
     marginBottom: 10,
   },
@@ -336,12 +334,12 @@ const styles = StyleSheet.create({
   },
 
   heroImage: {
-    position: 'absolute',
+    position: "absolute",
     right: -8,
     bottom: 0,
     width: 165,
     height: 165,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
 
   searchWrapper: {
@@ -349,13 +347,13 @@ const styles = StyleSheet.create({
   },
 
   searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 8,
-    shadowColor: '#92aa7e',
+    shadowColor: "#92aa7e",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.03,
     shadowRadius: 8,
@@ -373,15 +371,15 @@ const styles = StyleSheet.create({
   },
 
   sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
     marginBottom: 14,
   },
 
   sectionTitle: {
     fontSize: 22,
-    fontWeight: '800',
+    fontWeight: "800",
     color: colors.text,
   },
 
@@ -393,47 +391,47 @@ const styles = StyleSheet.create({
 
   seeAllText: {
     fontSize: 13,
-    fontWeight: '700',
+    fontWeight: "700",
     color: colors.primary,
   },
 
   categories: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     marginBottom: 22,
   },
 
   category: {
-    width: '48%',
+    width: "48%",
     borderRadius: 22,
     padding: 16,
     marginBottom: 12,
     minHeight: 118,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
 
   categoryIconWrap: {
     width: 38,
     height: 38,
     borderRadius: 14,
-    backgroundColor: 'rgba(255,255,255,0.18)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(255,255,255,0.18)",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 10,
   },
 
   categoryText: {
-    color: '#fff',
-    fontWeight: '800',
+    color: "#fff",
+    fontWeight: "800",
     fontSize: 16,
     marginBottom: 4,
   },
 
   categorySubtitle: {
-    color: 'rgba(255,255,255,0.88)',
+    color: "rgba(255,255,255,0.88)",
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
   },
 
   recommendedRow: {
@@ -442,11 +440,11 @@ const styles = StyleSheet.create({
 
   productCard: {
     width: 220,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 24,
     marginRight: 14,
-    overflow: 'hidden',
-    shadowColor: '#4a5f18b4',
+    overflow: "hidden",
+    shadowColor: "#4a5f18b4",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.04,
     shadowRadius: 10,
@@ -454,9 +452,9 @@ const styles = StyleSheet.create({
   },
 
   productCardImage: {
-    width: '100%',
+    width: "100%",
     height: 130,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
 
   productCardContent: {
@@ -464,20 +462,20 @@ const styles = StyleSheet.create({
   },
 
   productCardBadge: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#EEF5E3',
+    alignSelf: "flex-start",
+    backgroundColor: "#EEF5E3",
     color: colors.primary,
     paddingHorizontal: 9,
     paddingVertical: 4,
     borderRadius: 999,
     fontSize: 11,
-    fontWeight: '800',
+    fontWeight: "800",
     marginBottom: 10,
   },
 
   productCardName: {
     fontSize: 16,
-    fontWeight: '800',
+    fontWeight: "800",
     color: colors.text,
     marginBottom: 4,
     minHeight: 40,
@@ -490,15 +488,15 @@ const styles = StyleSheet.create({
   },
 
   productCardFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 
   productCardTime: {
     fontSize: 12,
     color: colors.textSoft,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 
   addButton: {
@@ -506,21 +504,21 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: 14,
     backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   bottomBar: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 20,
     left: 60,
     right: 60,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 74,
     padding: 19,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 
   activeButton: {
@@ -528,7 +526,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

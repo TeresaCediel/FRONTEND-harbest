@@ -1,15 +1,19 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+// Pantallas Comunes
+import LoginScreen from "../screens/LoginScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import SplashScreen from "../screens/SplashScreen";
+
+// Pantallas del Cliente
 import CartScreen from "../screens/CartScreen";
 import CategoryAllScreen from "../screens/CategoryAllScreen";
 import CategoryFruitsScreen from "../screens/CategoryFruitsScreen";
 import CategorySpicesScreen from "../screens/CategorySpicesScreen";
 import CategoryVegetablesScreen from "../screens/CategoryVegetablesScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
-import HomeAgricultorScreen from "../screens/HomeAgricultorScreen"; // IMPORTADO
 import HomeScreen from "../screens/HomeScreen";
-import LoginScreen from "../screens/LoginScreen";
 import OrdersScreen from "../screens/OrdersScreen";
 import OrdersScreenAgricultor from "../screens/OrdersScreenAgricultor";
 import ProductDetailScreen from "../screens/ProductDetailScreen";
@@ -25,7 +29,7 @@ export default function StackNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="HomeAgricultor" // PUESTO POR DEFECTO PARA TESTEAR
+        initialRouteName="HomeAgricultor"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Splash" component={SplashScreen} />
