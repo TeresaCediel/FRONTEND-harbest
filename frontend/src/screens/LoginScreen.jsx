@@ -1,21 +1,20 @@
-import React from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
   Image,
   SafeAreaView,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useRoute } from '@react-navigation/native';
-import colors from '../styles/colors';
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import colors from "../styles/colors";
 
 export default function LoginScreen({ navigation }) {
   const route = useRoute();
   const { role } = route.params || {};
-  const isAdmin = role === 'admin';
+  const isAdmin = role === "admin";
 
   const themeColors = {
     primary: isAdmin ? colors.secondary : colors.primary,
@@ -25,31 +24,34 @@ export default function LoginScreen({ navigation }) {
   };
 
   const logoSource = isAdmin
-    ? require('../../assets/images/agricultor-logo.png')
-    : require('../../assets/images/logo-harbest.png');
+    ? require("../../assets/images/agricultor-logo.png")
+    : require("../../assets/images/logo-harbest.png");
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={[styles.container, { backgroundColor: themeColors.primary }]}>
+      <View
+        style={[styles.container, { backgroundColor: themeColors.primary }]}
+      >
         {/* CABECERA */}
         <View style={styles.topSection}>
           <View style={styles.topRow}>
-            <TouchableOpacity onPress={() => navigation.navigate('Splash')}>
+            <TouchableOpacity onPress={() => navigation.navigate("Splash")}>
               <Ionicons name="arrow-back" size={22} color="#fff" />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Splash')}>
+            <TouchableOpacity onPress={() => navigation.navigate("Splash")}>
               <Image source={logoSource} style={styles.logoImage} />
             </TouchableOpacity>
           </View>
 
           <View style={styles.headerTextBlock}>
             <Text style={styles.headerMiniText}>
-              {isAdmin ? 'Acceso agricultor' : 'Acceso usuario'}
+              {isAdmin ? "Acceso agricultor" : "Acceso usuario"}
             </Text>
             <Text style={styles.headerTitle}>Iniciar sesión</Text>
             <Text style={styles.headerSubtitle}>
-              Accede a Harbest y continúa comprando producto fresco y de proximidad.
+              Accede a Harbest y continúa comprando producto fresco y de
+              proximidad.
             </Text>
           </View>
 
@@ -69,7 +71,6 @@ export default function LoginScreen({ navigation }) {
               autoCapitalize="none"
             />
           </View>
-
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Contraseña</Text>
             <View style={styles.passwordWrapper}>
@@ -86,43 +87,46 @@ export default function LoginScreen({ navigation }) {
               </TouchableOpacity>
             </View>
           </View>
-
           <TouchableOpacity style={styles.forgotWrapper}>
             <Text style={[styles.forgotText, { color: themeColors.primary }]}>
               ¿Has olvidado tu contraseña?
             </Text>
           </TouchableOpacity>
-
+          // ... (Busca el componente TouchableOpacity del botón de Iniciar
+          Sesión)
           <TouchableOpacity
-            style={[styles.mainButton, { backgroundColor: themeColors.primary }]}
-            onPress={() => navigation.navigate('Home')}
+            style={[
+              styles.mainButton,
+              { backgroundColor: themeColors.primary },
+            ]}
+            onPress={() => {
+              console.log("Navegando a HomeAgricultor...");
+              navigation.navigate("Home");
+            }}
             activeOpacity={0.85}
           >
             <Text style={styles.mainButtonText}>Iniciar sesión</Text>
           </TouchableOpacity>
-
+          // ... (El resto del archivo se queda igual)
           <View style={styles.dividerRow}>
             <View style={styles.dividerLine} />
             <Text style={styles.dividerText}>o continúa con</Text>
             <View style={styles.dividerLine} />
           </View>
-
           <TouchableOpacity style={styles.socialButton} activeOpacity={0.85}>
             <View style={styles.socialIconCircle}>
               <Text style={styles.socialIconText}>G</Text>
             </View>
             <Text style={styles.socialButtonText}>Continuar con Google</Text>
           </TouchableOpacity>
-
           <TouchableOpacity style={styles.socialButton} activeOpacity={0.85}>
             <View style={styles.socialIconCircle}>
               <Text style={styles.socialIconText}>f</Text>
             </View>
             <Text style={styles.socialButtonText}>Continuar con Facebook</Text>
           </TouchableOpacity>
-
           <Text style={styles.registerText}>
-            ¿No tienes cuenta?{' '}
+            ¿No tienes cuenta?{" "}
             <Text style={[styles.registerLink, { color: themeColors.primary }]}>
               Regístrate
             </Text>
@@ -147,20 +151,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 18,
     paddingBottom: 34,
-    position: 'relative',
+    position: "relative",
   },
 
   topRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 26,
   },
 
   logoImage: {
     width: 42,
     height: 42,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
 
   headerTextBlock: {
@@ -168,57 +172,57 @@ const styles = StyleSheet.create({
   },
 
   headerMiniText: {
-    color: 'rgba(255,255,255,0.82)',
+    color: "rgba(255,255,255,0.82)",
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 10,
   },
 
   headerTitle: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 30,
-    fontWeight: '800',
+    fontWeight: "800",
     marginBottom: 10,
   },
 
   headerSubtitle: {
-    color: 'rgba(255,255,255,0.88)',
+    color: "rgba(255,255,255,0.88)",
     fontSize: 15,
     lineHeight: 22,
     maxWidth: 290,
   },
 
   decorLeafOne: {
-    position: 'absolute',
+    position: "absolute",
     right: 24,
     bottom: 32,
     width: 52,
     height: 52,
     borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.08)',
-    transform: [{ rotate: '28deg' }],
+    backgroundColor: "rgba(255,255,255,0.08)",
+    transform: [{ rotate: "28deg" }],
   },
 
   decorLeafTwo: {
-    position: 'absolute',
+    position: "absolute",
     right: 58,
     bottom: 50,
     width: 26,
     height: 26,
     borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.10)',
-    transform: [{ rotate: '-20deg' }],
+    backgroundColor: "rgba(255,255,255,0.10)",
+    transform: [{ rotate: "-20deg" }],
   },
 
   card: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     paddingHorizontal: 22,
     paddingTop: 26,
     paddingBottom: 24,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
@@ -231,13 +235,13 @@ const styles = StyleSheet.create({
 
   label: {
     fontSize: 13,
-    fontWeight: '700',
+    fontWeight: "700",
     color: colors.text,
     marginBottom: 8,
   },
 
   input: {
-    backgroundColor: '#F3F5ED',
+    backgroundColor: "#F3F5ED",
     borderRadius: 999,
     paddingHorizontal: 16,
     paddingVertical: 13,
@@ -246,13 +250,13 @@ const styles = StyleSheet.create({
   },
 
   passwordWrapper: {
-    backgroundColor: '#F3F5ED',
+    backgroundColor: "#F3F5ED",
     borderRadius: 999,
     paddingLeft: 16,
     paddingRight: 14,
     paddingVertical: 13,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   passwordInput: {
@@ -263,56 +267,56 @@ const styles = StyleSheet.create({
 
   showText: {
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: "700",
   },
 
   forgotWrapper: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     marginTop: 2,
     marginBottom: 18,
   },
 
   forgotText: {
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 
   mainButton: {
     borderRadius: 999,
     paddingVertical: 14,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 22,
   },
 
   mainButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 15,
-    fontWeight: '800',
+    fontWeight: "800",
   },
 
   dividerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 18,
   },
 
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: '#E6E6E6',
+    backgroundColor: "#E6E6E6",
   },
 
   dividerText: {
     marginHorizontal: 10,
     fontSize: 12,
     color: colors.textSoft,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 
   socialButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F8F8F5',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F8F8F5",
     borderRadius: 999,
     paddingVertical: 12,
     paddingHorizontal: 14,
@@ -323,32 +327,32 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 12,
   },
 
   socialIconText: {
     fontSize: 16,
-    fontWeight: '800',
+    fontWeight: "800",
     color: colors.text,
   },
 
   socialButtonText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
     color: colors.text,
   },
 
   registerText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 13,
     color: colors.textSoft,
     marginTop: 10,
   },
 
   registerLink: {
-    fontWeight: '800',
+    fontWeight: "800",
   },
 });
