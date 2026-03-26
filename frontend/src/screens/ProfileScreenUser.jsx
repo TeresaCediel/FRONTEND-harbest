@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import colors from '../styles/colors';
 import ScreenContainer from '../components/common/ScreenContainer';
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreenUser({ navigation }) {
   return (
     <ScreenContainer>
       <View style={styles.container}>

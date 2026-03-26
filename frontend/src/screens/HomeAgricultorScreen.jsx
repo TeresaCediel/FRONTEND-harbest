@@ -111,7 +111,7 @@ export default function HomeAgricultorScreen({ navigation }) {
           <TouchableOpacity>
             <Ionicons name="list-outline" size={24} color="#8A8A8A" />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('ProfileAgricultor')}>
             <Ionicons name="person-outline" size={22} color="#8A8A8A" />
           </TouchableOpacity>
         </View>
