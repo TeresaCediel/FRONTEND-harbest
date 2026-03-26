@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
 import FarmerTabBar from "../components/common/FarmerTabBar";
 import ScreenContainer from "../components/common/ScreenContainer";
 
@@ -43,7 +42,6 @@ export default function OrdersAgricultorScreen({ navigation }) {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={Styles.ScrollPadding}
         >
-          {/* CABECERA (Como en el mockup) */}
           <View style={Styles.HeaderRow}>
             <TouchableOpacity
               style={Styles.HeaderLeft}
@@ -57,7 +55,9 @@ export default function OrdersAgricultorScreen({ navigation }) {
               <TouchableOpacity style={{ marginRight: 8 }}>
                 <Ionicons name="ellipsis-vertical" size={20} color="#8A8A8A" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("ProfileAgricultor")}
+              >
                 <View
                   style={[Styles.LogoCircle, { backgroundColor: FarmerColor }]}
                 >
@@ -71,7 +71,6 @@ export default function OrdersAgricultorScreen({ navigation }) {
             </View>
           </View>
 
-          {/* BUSCADOR */}
           <View style={Styles.SearchBar}>
             <Ionicons name="search" size={20} color="#B8B8B8" />
             <TextInput
@@ -81,20 +80,17 @@ export default function OrdersAgricultorScreen({ navigation }) {
             />
           </View>
 
-          {/* LISTA DE PEDIDOS */}
           {orders.map((order, index) => (
             <OrderCard key={index} order={order} />
           ))}
         </ScrollView>
 
-        {/* BARRA INFERIOR DEL AGRICULTOR */}
         <FarmerTabBar Navigation={navigation} ActiveRoute="OrdersAgricultor" />
       </View>
     </ScreenContainer>
   );
 }
 
-// SUB-COMPONENTE DE TARJETA DE PEDIDO
 const OrderCard = ({ order }) => {
   const isDelivered = order.status === "ENTREGADO";
 
@@ -107,7 +103,6 @@ const OrderCard = ({ order }) => {
       activeOpacity={0.9}
     >
       <View style={Styles.CardTop}>
-        {/* Icono de la caja gigante a la izquierda */}
         <View style={Styles.BoxIconWrap}>
           <Ionicons
             name="cube"
@@ -119,8 +114,6 @@ const OrderCard = ({ order }) => {
             }
           />
         </View>
-
-        {/* Info Central */}
         <View style={Styles.OrderInfo}>
           <Text
             style={[
@@ -132,13 +125,10 @@ const OrderCard = ({ order }) => {
           >
             {order.status}
           </Text>
-
           <Text style={Styles.OrderTitle}>Pedido #{order.id}</Text>
           <Text style={Styles.OrderText}>Para: {order.user}</Text>
           <Text style={Styles.OrderText}>Fecha: {order.date}</Text>
         </View>
-
-        {/* Flecha Derecha */}
         <View style={Styles.ArrowWrap}>
           <Ionicons
             name="chevron-forward"
@@ -148,17 +138,11 @@ const OrderCard = ({ order }) => {
         </View>
       </View>
 
-      {/* BARRA DE PROGRESO INFERIOR (Camión o Check) */}
       <View style={Styles.ProgressContainer}>
-        {/* Círculo inicial */}
         <View style={Styles.ProgressStartCircle}>
           <View style={Styles.ProgressStartInner} />
         </View>
-
-        {/* Línea Sólida */}
         <View style={Styles.ProgressLineSolid} />
-
-        {/* Icono Central (Camión si pendiente) */}
         {!isDelivered && (
           <View style={Styles.ProgressTruckWrap}>
             <MaterialCommunityIcons
@@ -168,15 +152,11 @@ const OrderCard = ({ order }) => {
             />
           </View>
         )}
-
-        {/* Línea (Punteada si pendiente, Sólida si entregado) */}
         {isDelivered ? (
           <View style={Styles.ProgressLineSolid} />
         ) : (
           <View style={Styles.ProgressLineDashed} />
         )}
-
-        {/* Final (Punto si pendiente, Check si entregado) */}
         {isDelivered ? (
           <View style={Styles.ProgressEndCheck}>
             <Ionicons name="checkmark" size={24} color="#8A8A8A" />
@@ -189,11 +169,9 @@ const OrderCard = ({ order }) => {
   );
 };
 
-// ESTILOS (CapsCase)
 const Styles = StyleSheet.create({
   MainContainer: { flex: 1, backgroundColor: "#F8F8F8" },
   ScrollPadding: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 110 },
-
   HeaderRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -216,7 +194,6 @@ const Styles = StyleSheet.create({
     alignItems: "center",
   },
   TopLogo: { width: 22, height: 22, resizeMode: "contain" },
-
   SearchBar: {
     flexDirection: "row",
     alignItems: "center",
@@ -229,7 +206,6 @@ const Styles = StyleSheet.create({
     borderColor: "#EFEFEF",
   },
   SearchInputText: { flex: 1, marginLeft: 10, fontSize: 15, color: "#B8B8B8" },
-
   Card: {
     borderRadius: 20,
     padding: 18,
@@ -239,9 +215,8 @@ const Styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 5,
   },
-  CardPending: { backgroundColor: "#F6F5E3" }, // Amarillo pastel del mockup
-  CardDelivered: { backgroundColor: "#E9F5E1" }, // Verde pastel del mockup
-
+  CardPending: { backgroundColor: "#F6F5E3" },
+  CardDelivered: { backgroundColor: "#E9F5E1" },
   CardTop: { flexDirection: "row", alignItems: "flex-start", marginBottom: 10 },
   BoxIconWrap: {
     width: 70,
@@ -249,7 +224,6 @@ const Styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
   },
-
   OrderInfo: { flex: 1, paddingTop: 5 },
   OrderStatus: {
     fontSize: 10,
@@ -272,15 +246,12 @@ const Styles = StyleSheet.create({
     fontWeight: "500",
     marginBottom: 2,
   },
-
   ArrowWrap: {
     justifyContent: "flex-end",
     alignItems: "center",
     paddingLeft: 10,
     paddingTop: 60,
   },
-
-  // Estilos de la Barra de Progreso Inferior
   ProgressContainer: {
     flexDirection: "row",
     alignItems: "center",

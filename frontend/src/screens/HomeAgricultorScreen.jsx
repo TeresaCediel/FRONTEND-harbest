@@ -34,7 +34,9 @@ export default function HomeAgricultorScreen({ navigation }) {
               <TouchableOpacity style={{ marginRight: 8 }}>
                 <Ionicons name="ellipsis-vertical" size={20} color="#8A8A8A" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("ProfileAgricultor")}
+              >
                 <View
                   style={[Styles.LogoCircle, { backgroundColor: FarmerColor }]}
                 >
@@ -98,23 +100,8 @@ export default function HomeAgricultorScreen({ navigation }) {
           </View>
         </ScrollView>
 
-        {/* BARRA DE NAVEGACIÓN INFERIOR (MOCKUP) */}
-        <View style={Styles.NavBar}>
-          <TouchableOpacity
-            style={[Styles.NavTab, { backgroundColor: "#FCEEEE" }]}
-          >
-            <Ionicons name="home" size={20} color={FarmerColor} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="add-circle-outline" size={24} color="#8A8A8A" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="list-outline" size={24} color="#8A8A8A" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('ProfileAgricultor')}>
-            <Ionicons name="person-outline" size={22} color="#8A8A8A" />
-          </TouchableOpacity>
-        </View>
+        {/* BARRA DE NAVEGACIÓN REUTILIZABLE */}
+        <FarmerTabBar Navigation={navigation} ActiveRoute="HomeAgricultor" />
       </View>
     </ScreenContainer>
   );

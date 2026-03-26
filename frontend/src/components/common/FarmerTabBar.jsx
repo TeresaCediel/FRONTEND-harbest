@@ -2,7 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function FarmerTabBar({ Navigation, ActiveRoute }) {
-  // El color corporativo y el gris de los iconos inactivos
   const FarmerColor = "#d25e2c";
   const InactiveColor = "#8A8A8A";
 
@@ -26,13 +25,13 @@ export default function FarmerTabBar({ Navigation, ActiveRoute }) {
           />
         </TouchableOpacity>
 
-        {/* PEDIDOS (Icono de álbum/caja) */}
+        {/* PEDIDOS */}
         <TouchableOpacity
           style={[
             Styles.TabIcon,
             ActiveRoute === "OrdersAgricultor" && Styles.ActiveTabBg,
           ]}
-          onPress={() => Navigation.navigate("OrdersAgricultor")} // <-- CAMBIA ESTO
+          onPress={() => Navigation.navigate("OrdersAgricultor")}
         >
           <Ionicons
             name="albums-outline"
@@ -43,7 +42,7 @@ export default function FarmerTabBar({ Navigation, ActiveRoute }) {
           />
         </TouchableOpacity>
 
-        {/* AÑADIR (Botón central de +, aunque en el mockup es un icono normal) */}
+        {/* AÑADIR PRODUCTO */}
         <TouchableOpacity
           style={[
             Styles.TabIcon,
@@ -62,14 +61,16 @@ export default function FarmerTabBar({ Navigation, ActiveRoute }) {
         <TouchableOpacity
           style={[
             Styles.TabIcon,
-            ActiveRoute === "Profile" && Styles.ActiveTabBg,
+            ActiveRoute === "ProfileAgricultor" && Styles.ActiveTabBg,
           ]}
-          onPress={() => Navigation.navigate("Profile")}
+          onPress={() => Navigation.navigate("ProfileAgricultor")}
         >
           <Ionicons
             name="person-outline"
             size={22}
-            color={ActiveRoute === "Profile" ? FarmerColor : InactiveColor}
+            color={
+              ActiveRoute === "ProfileAgricultor" ? FarmerColor : InactiveColor
+            }
           />
         </TouchableOpacity>
       </View>
@@ -83,27 +84,22 @@ const Styles = StyleSheet.create({
     bottom: 30,
     left: 0,
     right: 0,
-    alignItems: "center", // Centra la píldora en la pantalla
+    alignItems: "center",
   },
   Pill: {
-    backgroundColor: "#F2F2F2", // El gris clarito del mockup
+    backgroundColor: "#F2F2F2",
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
     borderRadius: 40,
     paddingVertical: 8,
-    width: "75%", // Ancho ajustado a la imagen
+    width: "75%",
     elevation: 2,
     shadowColor: "#000",
     shadowOpacity: 0.05,
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 2 },
   },
-  TabIcon: {
-    padding: 10,
-    borderRadius: 25,
-  },
-  ActiveTabBg: {
-    backgroundColor: "#E5E5E5", // El circulito gris sutil del icono activo
-  },
+  TabIcon: { padding: 10, borderRadius: 25 },
+  ActiveTabBg: { backgroundColor: "#E5E5E5" },
 });
