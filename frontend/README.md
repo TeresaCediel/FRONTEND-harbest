@@ -10,21 +10,21 @@ Harbest es una aplicación móvil centrada en la visualización y compra de prod
 
 Actualmente el proyecto incluye:
 
-* Pantalla de login
-* Pantalla principal (home)
-* Navegación entre pantallas
-* Diseño adaptado a formato móvil
-* Estructura modular y escalable
+- Pantalla de login
+- Pantalla principal (home)
+- Navegación entre pantallas
+- Diseño adaptado a formato móvil
+- Estructura modular y escalable
 
 ---
 
 ## Tecnologías utilizadas
 
-* React Native
-* Expo
-* React Navigation
-* JavaScript (ES6)
-* StyleSheet para estilos nativos
+- React Native
+- Expo
+- React Navigation
+- JavaScript (ES6)
+- StyleSheet para estilos nativos
 
 ---
 
@@ -114,18 +114,18 @@ Nota: la aplicación está diseñada para móvil. Se recomienda usar vista respo
 
 La aplicación sigue una estética basada en:
 
-* Colores naturales y suaves
-* Fondo claro tipo beige
-* Componentes con bordes redondeados
-* Espaciado amplio y limpio
-* Interfaz centrada únicamente en experiencia móvil
+- Colores naturales y suaves
+- Fondo claro tipo beige
+- Componentes con bordes redondeados
+- Espaciado amplio y limpio
+- Interfaz centrada únicamente en experiencia móvil
 
 Colores principales:
 
-* Verde: #668B0D
-* Naranja: #c45555
-* Fondo: #F4EEEA
-* Blanco: #FEFEFE
+- Verde: #668B0D
+- Naranja: #d25e2c
+- Fondo: #F4EEEA
+- Blanco: #FEFEFE
 
 ---
 
@@ -133,44 +133,43 @@ Colores principales:
 
 ### Login
 
-* Campo de email
-* Campo de contraseña
-* Botón de inicio de sesión
-* Diseño centrado con logo de la aplicación
+- Campo de email
+- Campo de contraseña
+- Botón de inicio de sesión
+- Diseño centrado con logo de la aplicación
 
 ---
 
 ### Home
 
-* Cabecera con logo
-* Buscador de productos
-* Sección de categorías
-* Listado de productos populares
-* Barra de navegación inferior
+- Cabecera con logo
+- Buscador de productos
+- Sección de categorías
+- Listado de productos populares
+- Barra de navegación inferior
 
 ---
 
 ## Próximas funcionalidades
 
-* Pantalla de detalle de producto
-* Carrito de compra
-* Sistema de autenticación real
-* Conexión con API
-* Perfil de usuario
-* Sistema de favoritos
+- Pantalla de detalle de producto
+- Carrito de compra
+- Sistema de autenticación real
+- Conexión con API
+- Perfil de usuario
+- Sistema de favoritos
 
 ---
 
 ## Equipo
 
-* Cristian Burgos Payá
-* Teresa Cediel Campillo
-* María Escribano Arce
-* Pablo Romero Pérez
+- Cristian Burgos Payá
+- Teresa Cediel Campillo
+- María Escribano Arce
+- Pablo Romero Pérez
 
 ---
 
 ## Estado del proyecto
 
 En desarrollo. Versión inicial funcional con login y home.
-

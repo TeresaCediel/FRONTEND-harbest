@@ -4,15 +4,14 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import FarmerTabBar from "../components/common/FarmerTabBar";
 import ScreenContainer from "../components/common/ScreenContainer";
-import colors from "../styles/colors";
 
 export default function HomeAgricultorScreen({ navigation }) {
-  const FarmerColor = "#C45555";
+  const FarmerColor = "#d25e2c";
 
   return (
     <ScreenContainer>
@@ -21,127 +20,105 @@ export default function HomeAgricultorScreen({ navigation }) {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={Styles.ScrollPadding}
         >
-          {/* BLOQUE 1: HEADER */}
-          <View style={Styles.HeaderSection}>
-            <View style={Styles.HeaderInfo}>
-              <Text style={Styles.HeaderLabel}>Panel de Gestión</Text>
-              <Text style={Styles.HeaderUser}>Hola, Agricultor</Text>
-            </View>
-            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-              <Image
-                source={require("../../assets/images/logo-harbest.png")}
-                style={Styles.TopLogo}
-              />
+          {/* CABECERA */}
+          <View style={Styles.HeaderRow}>
+            <TouchableOpacity
+              style={Styles.HeaderLeft}
+              onPress={() => navigation.goBack()}
+            >
+              <Ionicons name="arrow-back" size={22} color="#8A8A8A" />
+              <Text style={Styles.HeaderText}>Inicio</Text>
             </TouchableOpacity>
-          </View>
 
-          {/* BLOQUE 2: BUSCADOR */}
-          <View style={Styles.SearchArea}>
-            <View style={Styles.SearchBar}>
-              <Ionicons name="search" size={18} color={colors.textSoft} />
-              <TextInput
-                placeholder="Buscar en mis productos..."
-                style={Styles.SearchInput}
-                placeholderTextColor={colors.textSoft}
-              />
+            <View style={Styles.HeaderRight}>
+              <TouchableOpacity style={{ marginRight: 8 }}>
+                <Ionicons name="ellipsis-vertical" size={20} color="#8A8A8A" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+                <View
+                  style={[Styles.LogoCircle, { backgroundColor: FarmerColor }]}
+                >
+                  <Image
+                    source={require("../../assets/images/logo-harbest.png")}
+                    style={Styles.TopLogo}
+                    tintColor="#FFF"
+                  />
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
 
-          {/* BLOQUE 3: CATEGORÍAS */}
-          <View style={Styles.SectionHeader}>
-            <Text style={Styles.SectionTitle}>Mis Productos</Text>
-          </View>
+          {/* BUSCADOR */}
+          <TouchableOpacity
+            style={Styles.SearchBar}
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate("SearchAgricultor")}
+          >
+            <Ionicons name="search" size={18} color="#B8B8B8" />
+            <Text style={Styles.SearchInputText}>Buscar productos...</Text>
+          </TouchableOpacity>
+
+          {/* TÍTULO */}
+          <Text style={Styles.MainTitle}>Mis Productos</Text>
+
+          {/* CATEGORÍAS */}
           <View style={Styles.Grid}>
+            <CategoryItem Color="#DE7B54" Icon="logo-apple" Title="FRUTAS" />
+            <CategoryItem Color="#789A3D" Icon="leaf" Title="VERDURAS" />
+            <CategoryItem Color="#E8D499" Icon="nutrition" Title="ESPECIAS" />
             <CategoryItem
-              Color="#E87D3E"
-              Icon="nutrition"
-              Title="Frutas"
-              Info="12 activos"
-            />
-            <CategoryItem
-              Color="#7D9B45"
-              Icon="leaf"
-              Title="Verduras"
-              Info="8 activos"
-            />
-            <CategoryItem
-              Color="#C9A46A"
-              Icon="flame"
-              Title="Especias"
-              Info="3 activos"
-            />
-            <CategoryItem
-              Color="#B8B8B8"
-              Icon="grid"
-              Title="Ver todo"
-              Info="Catálogo"
+              Color="#BCBCBC"
+              Icon="barcode-outline"
+              Title="VER TODO"
             />
           </View>
 
-          {/* BLOQUE 4: LISTADO RECIENTE */}
-          <View style={Styles.SectionHeader}>
-            <Text style={Styles.SectionTitle}>Últimos añadidos...</Text>
-            <TouchableOpacity>
-              <Text style={[Styles.EditLink, { color: FarmerColor }]}>
-                Editar stock
-              </Text>
-            </TouchableOpacity>
-          </View>
+          {/* ÚLTIMOS AÑADIDOS */}
+          <Text style={Styles.SectionTitle}>Últimos añadidos...</Text>
+
           <View style={Styles.ProductList}>
             <ProductCard
-              Name="Tomates de la huerta"
-              Qty="50 kg"
-              Date="Hace 2 min"
+              Name="NARANJAS"
+              Qty="20 kg"
+              Date="Hace 11 min"
+              BgImg="#FF9800"
             />
-            <ProductCard Name="Aguacates Hass" Qty="12 kg" Date="Hace 45 min" />
-            <ProductCard Name="Pimienta Negra" Qty="4 kg" Date="Hace 2 h" />
+            <ProductCard
+              Name="AGUACATES"
+              Qty="12 kg"
+              Date="Hace 45 min"
+              BgImg="#4CAF50"
+            />
+            <ProductCard
+              Name="PIMIENTA NEGRA"
+              Qty="4 kg"
+              Date="Hace 2 h"
+              BgImg="#795548"
+            />
           </View>
         </ScrollView>
 
-        {/* BARRA DE NAVEGACIÓN INFERIOR (MOCKUP) */}
-        <View style={Styles.NavBar}>
-          <TouchableOpacity
-            style={[Styles.NavTab, { backgroundColor: "#FCEEEE" }]}
-          >
-            <Ionicons name="home" size={20} color={FarmerColor} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="add-circle-outline" size={24} color="#8A8A8A" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="list-outline" size={24} color="#8A8A8A" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="person-outline" size={22} color="#8A8A8A" />
-          </TouchableOpacity>
-        </View>
+        <FarmerTabBar Navigation={navigation} ActiveRoute="HomeAgricultor" />
       </View>
     </ScreenContainer>
   );
 }
 
-// COMPONENTES AUXILIARES (CapsCase)
-const CategoryItem = ({ Color, Icon, Title, Info }) => (
+// SUB-COMPONENTES
+const CategoryItem = ({ Color, Icon, Title }) => (
   <TouchableOpacity
     style={[Styles.CategoryBox, { backgroundColor: Color }]}
     activeOpacity={0.9}
   >
-    <View style={Styles.IconCircle}>
-      <Ionicons name={Icon} size={20} color="#fff" />
-    </View>
-    <View>
-      <Text style={Styles.CategoryTitle}>{Title}</Text>
-      <Text style={Styles.CategoryInfo}>{Info}</Text>
-    </View>
+    <Ionicons name={Icon} size={24} color="#FFF" style={{ marginRight: 8 }} />
+    <Text style={Styles.CategoryTitle}>{Title}</Text>
   </TouchableOpacity>
 );
 
-const ProductCard = ({ Name, Qty, Date }) => (
-  <TouchableOpacity style={Styles.Card} activeOpacity={0.7}>
-    <View style={Styles.CardImg}>
-      <Ionicons name="image-outline" size={24} color="#B8B8B8" />
-    </View>
-    <View style={{ flex: 1 }}>
+const ProductCard = ({ Name, Qty, Date, BgImg }) => (
+  <TouchableOpacity style={Styles.Card} activeOpacity={0.8}>
+    <View style={[Styles.CardImgPlaceholder, { backgroundColor: BgImg }]} />
+    <View style={Styles.CardInfo}>
       <Text style={Styles.CardName}>{Name}</Text>
       <Text style={Styles.CardQty}>{Qty}</Text>
     </View>
@@ -149,92 +126,108 @@ const ProductCard = ({ Name, Qty, Date }) => (
   </TouchableOpacity>
 );
 
+// ESTILOS
 const Styles = StyleSheet.create({
-  MainContainer: { flex: 1, backgroundColor: "#F7F8F4" },
-  ScrollPadding: { padding: 20, paddingBottom: 120 },
-  HeaderSection: {
+  MainContainer: { flex: 1, backgroundColor: "#F8F8F8" },
+  ScrollPadding: { paddingHorizontal: 25, paddingTop: 10, paddingBottom: 110 },
+
+  HeaderRow: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 24,
+    marginBottom: 20,
   },
-  HeaderInfo: { flex: 1 },
-  HeaderLabel: { fontSize: 12, color: "#8A8A8A", fontWeight: "600" },
-  HeaderUser: { fontSize: 24, fontWeight: "800", color: "#2D2D2D" },
-  TopLogo: { width: 40, height: 40, resizeMode: "contain" },
-  SearchArea: { marginBottom: 25 },
+  HeaderLeft: { flexDirection: "row", alignItems: "center" },
+  HeaderText: {
+    fontSize: 18,
+    color: "#8A8A8A",
+    marginLeft: 10,
+    fontWeight: "500",
+  },
+  HeaderRight: { flexDirection: "row", alignItems: "center" },
+  LogoCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  TopLogo: { width: 20, height: 20, resizeMode: "contain" },
+
   SearchBar: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#FFF",
-    borderRadius: 20,
-    padding: 12,
-    elevation: 3,
+    borderRadius: 25,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    marginBottom: 25,
+    borderWidth: 1,
+    borderColor: "#EFEFEF",
   },
-  SearchInput: { flex: 1, marginLeft: 10, fontSize: 14 },
-  SectionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  SearchInputText: { marginLeft: 10, fontSize: 14, color: "#B8B8B8" },
+
+  MainTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#7A7A7A",
     marginBottom: 15,
   },
-  SectionTitle: { fontSize: 20, fontWeight: "800", color: "#2D2D2D" },
-  EditLink: { fontWeight: "700", fontSize: 13 },
+
   Grid: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginBottom: 25,
   },
   CategoryBox: {
     width: "48%",
-    borderRadius: 22,
-    padding: 15,
-    marginBottom: 12,
-    height: 120,
-    justifyContent: "space-between",
-  },
-  IconCircle: {
-    width: 35,
-    height: 35,
-    borderRadius: 12,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    justifyContent: "center",
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 12,
+    paddingVertical: 18,
+    marginBottom: 12,
   },
-  CategoryTitle: { color: "#FFF", fontWeight: "800", fontSize: 16 },
-  CategoryInfo: { color: "rgba(255,255,255,0.8)", fontSize: 12 },
-  ProductList: { gap: 12 },
+  CategoryTitle: { color: "#FFF", fontWeight: "700", fontSize: 13 },
+
+  SectionTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#8A8A8A",
+    marginBottom: 12,
+  },
+
+  ProductList: { gap: 10 },
   Card: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#FFF",
-    padding: 12,
-    borderRadius: 18,
-    elevation: 2,
+    borderRadius: 16,
+    padding: 10,
+    elevation: 1,
+    shadowColor: "#000",
+    shadowOpacity: 0.04,
+    shadowRadius: 5,
   },
-  CardImg: {
-    width: 45,
-    height: 45,
+  CardImgPlaceholder: {
+    width: 55,
+    height: 55,
     borderRadius: 12,
-    backgroundColor: "#F0F0F0",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 12,
+    marginRight: 15,
   },
-  CardName: { fontWeight: "700", color: "#2D2D2D" },
-  CardQty: { fontSize: 12, color: "#8A8A8A" },
-  CardDate: { fontSize: 11, color: "#B8B8B8" },
-  NavBar: {
-    position: "absolute",
-    bottom: 25,
-    left: 30,
-    right: 30,
-    backgroundColor: "#FFF",
-    borderRadius: 40,
-    padding: 12,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    elevation: 8,
+  CardInfo: { flex: 1, justifyContent: "center" },
+  CardName: {
+    fontWeight: "700",
+    color: "#7A7A7A",
+    fontSize: 14,
+    marginBottom: 4,
   },
-  NavTab: { padding: 10, borderRadius: 20 },
+  CardQty: { fontSize: 12, color: "#A8A8A8" },
+  CardDate: {
+    fontSize: 11,
+    color: "#B8B8B8",
+    alignSelf: "flex-end",
+    marginBottom: 5,
+  },
 });
