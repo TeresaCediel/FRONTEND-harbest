@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -6,12 +6,13 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-} from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import colors from '../styles/colors';
-import ScreenContainer from '../components/common/ScreenContainer';
+} from "react-native";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import colors from "../styles/colors";
+import ScreenContainer from "../components/common/ScreenContainer";
+import FarmerTabBar from "../components/common/FarmerTabBar"; // <-- IMPORTAMOS NUESTRA BARRA
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreenAgricultor({ navigation }) {
   return (
     <ScreenContainer>
       <View style={styles.container}>
@@ -27,16 +28,20 @@ export default function ProfileScreen({ navigation }) {
                 onPress={() => navigation.goBack()}
                 activeOpacity={0.85}
               >
-                <Ionicons name="arrow-back" size={20} color={stylesConst.textDark} />
+                <Ionicons
+                  name="arrow-back"
+                  size={20}
+                  color={stylesConst.textDark}
+                />
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.logoWrap}
-                onPress={() => navigation.navigate('Home')}
+                onPress={() => navigation.navigate("HomeAgricultor")} // <-- FUGA SELLADA (Iba a 'Home')
                 activeOpacity={0.85}
               >
                 <Image
-                  source={require('../../assets/images/agricultor-logo.png')}
+                  source={require("../../assets/images/agricultor-logo.png")}
                   style={styles.headerLogo}
                 />
               </TouchableOpacity>
@@ -44,14 +49,15 @@ export default function ProfileScreen({ navigation }) {
 
             <Text style={styles.headerTitle}>Panel del agricultor</Text>
             <Text style={styles.headerSubtitle}>
-              Gestiona tu cuenta, tus productos, pedidos y rendimiento de ventas.
+              Gestiona tu cuenta, tus productos, pedidos y rendimiento de
+              ventas.
             </Text>
           </View>
 
           {/* TARJETA PERFIL */}
           <View style={styles.profileCard}>
             <Image
-              source={require('../../assets/images/agri.jpg')}
+              source={require("../../assets/images/agri.jpg")}
               style={styles.avatarImage}
             />
 
@@ -97,7 +103,7 @@ export default function ProfileScreen({ navigation }) {
               iconType="ion"
               icon="document-text-outline"
               label="Mis pedidos"
-              onPress={() => navigation.navigate('OrdersAgricultor')}
+              onPress={() => navigation.navigate("OrdersAgricultor")}
             />
 
             <ProfileOption
@@ -115,7 +121,7 @@ export default function ProfileScreen({ navigation }) {
               iconType="material"
               icon="warehouse"
               label="Inventario"
-              onPress={() => navigation.navigate('Inventory')}
+              onPress={() => navigation.navigate("Inventory")}
             />
 
             <ProfileOption
@@ -133,7 +139,7 @@ export default function ProfileScreen({ navigation }) {
 
           <TouchableOpacity
             style={styles.logoutButton}
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate("Login")}
             activeOpacity={0.85}
           >
             <Ionicons name="log-out-outline" size={18} color="#8D5B2D" />
@@ -141,37 +147,27 @@ export default function ProfileScreen({ navigation }) {
           </TouchableOpacity>
         </ScrollView>
 
-        {/* BARRA INFERIOR */}
-        <View style={styles.bottomBar}>
-          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
-            <Ionicons name="search-outline" size={20} color="#7B7B7B" />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
-            <Ionicons name="heart-outline" size={20} color="#7B7B7B" />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-            <Ionicons name="cart-outline" size={20} color="#7B7B7B" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.activeButton}>
-            <Ionicons name="person" size={18} color="#fff" />
-          </TouchableOpacity>
-        </View>
+        {/* BARRA INFERIOR BLINDADA */}
+        <FarmerTabBar Navigation={navigation} ActiveRoute="ProfileAgricultor" />
       </View>
     </ScreenContainer>
   );
 }
 
-const ProfileOption = ({ icon, label, onPress, highlight = false, iconType = 'ion' }) => {
+const ProfileOption = ({
+  icon,
+  label,
+  onPress,
+  highlight = false,
+  iconType = "ion",
+}) => {
   const renderIcon = () => {
-    if (iconType === 'material') {
+    if (iconType === "material") {
       return (
         <MaterialCommunityIcons
           name={icon}
           size={18}
-          color={highlight ? '#A06A2C' : stylesConst.textDark}
+          color={highlight ? "#A06A2C" : stylesConst.textDark}
         />
       );
     }
@@ -180,7 +176,7 @@ const ProfileOption = ({ icon, label, onPress, highlight = false, iconType = 'io
       <Ionicons
         name={icon}
         size={18}
-        color={highlight ? '#A06A2C' : stylesConst.textDark}
+        color={highlight ? "#A06A2C" : stylesConst.textDark}
       />
     );
   };
@@ -192,10 +188,17 @@ const ProfileOption = ({ icon, label, onPress, highlight = false, iconType = 'io
       activeOpacity={0.85}
     >
       <View style={styles.optionLeft}>
-        <View style={[styles.optionIconWrap, highlight && styles.optionIconWrapHighlight]}>
+        <View
+          style={[
+            styles.optionIconWrap,
+            highlight && styles.optionIconWrapHighlight,
+          ]}
+        >
           {renderIcon()}
         </View>
-        <Text style={[styles.optionText, highlight && styles.optionTextHighlight]}>
+        <Text
+          style={[styles.optionText, highlight && styles.optionTextHighlight]}
+        >
           {label}
         </Text>
       </View>
@@ -203,26 +206,26 @@ const ProfileOption = ({ icon, label, onPress, highlight = false, iconType = 'io
       <Ionicons
         name="chevron-forward"
         size={18}
-        color={highlight ? '#A06A2C' : '#8C8C8C'}
+        color={highlight ? "#A06A2C" : "#8C8C8C"}
       />
     </TouchableOpacity>
   );
 };
 
 const stylesConst = {
-  bg: '#F6F4EE',
-  card: '#FFFFFF',
-  primary: '#6E8B3D',
-  primarySoft: '#EEF3E4',
-  primaryDark: '#4F672A',
-  earth: '#E8DFC8',
-  earthSoft: '#F3EBD7',
-  highlight: '#F3F0E2',
-  border: '#E6E1D5',
-  textDark: '#3D3A34',
-  textSoft: '#7B766D',
-  secondary: '#d25e2c',
-  secondarySoft: '#feeddd',
+  bg: "#F6F4EE",
+  card: "#FFFFFF",
+  primary: "#6E8B3D",
+  primarySoft: "#EEF3E4",
+  primaryDark: "#4F672A",
+  earth: "#E8DFC8",
+  earthSoft: "#F3EBD7",
+  highlight: "#F3F0E2",
+  border: "#E6E1D5",
+  textDark: "#3D3A34",
+  textSoft: "#7B766D",
+  secondary: "#d25e2c",
+  secondarySoft: "#feeddd",
 };
 
 const styles = StyleSheet.create({
@@ -234,7 +237,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 18,
     paddingTop: 18,
-    paddingBottom: 120,
+    paddingBottom: 120, // Espacio para que la barra flotante no tape el botón de cerrar sesión
   },
 
   header: {
@@ -242,9 +245,9 @@ const styles = StyleSheet.create({
   },
 
   headerTopRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 18,
   },
 
@@ -252,27 +255,27 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   logoWrap: {
     width: 44,
     height: 44,
     borderRadius: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   headerLogo: {
     width: 28,
     height: 28,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
 
   headerTitle: {
     fontSize: 28,
-    fontWeight: '800',
+    fontWeight: "800",
     color: stylesConst.textDark,
     marginBottom: 8,
   },
@@ -285,11 +288,11 @@ const styles = StyleSheet.create({
   },
 
   profileCard: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 22,
     padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 22,
     borderWidth: 1,
     borderColor: stylesConst.border,
@@ -308,7 +311,7 @@ const styles = StyleSheet.create({
 
   username: {
     fontSize: 20,
-    fontWeight: '800',
+    fontWeight: "800",
     color: stylesConst.textDark,
     marginBottom: 4,
   },
@@ -320,19 +323,19 @@ const styles = StyleSheet.create({
   },
 
   badge: {
-    alignSelf: 'flex-start',
-    flexDirection: 'row',
-    alignItems: 'center',
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: stylesConst.secondarySoft,
     borderRadius: 999,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
 
   badgeText: {
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: "700",
     color: stylesConst.secondary,
     marginLeft: 6,
   },
@@ -343,102 +346,70 @@ const styles = StyleSheet.create({
 
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '800',
+    fontWeight: "800",
     color: stylesConst.textDark,
     marginBottom: 12,
     paddingLeft: 2,
   },
 
   option: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 15,
     marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     borderWidth: 1,
     borderColor: stylesConst.border,
   },
 
   optionHighlight: {
     backgroundColor: stylesConst.highlight,
-    borderColor: '#E7DFC7',
+    borderColor: "#E7DFC7",
   },
 
   optionLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   optionIconWrap: {
     width: 34,
     height: 34,
     borderRadius: 10,
-    backgroundColor: '#F7F5EF',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#F7F5EF",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 12,
   },
 
   optionIconWrapHighlight: {
-    backgroundColor: '#ECE4CC',
+    backgroundColor: "#ECE4CC",
   },
 
   optionText: {
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: "600",
     color: stylesConst.textDark,
   },
 
   optionTextHighlight: {
-    color: '#8C5B1D',
-    fontWeight: '700',
+    color: "#8C5B1D",
+    fontWeight: "700",
   },
 
   logoutButton: {
-    backgroundColor: '#FFF9F2',
+    backgroundColor: "#FFF9F2",
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#E8D6B7',
+    borderColor: "#E8D6B7",
     paddingVertical: 15,
     marginTop: 6,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
     marginBottom: 8,
-  },
-
-  logoutText: {
-    marginLeft: 8,
-    fontSize: 15,
-    fontWeight: '800',
-    color: '#8D5B2D',
-  },
-
-  bottomBar: {
-    position: 'absolute',
-    bottom: 18,
-    left: 24,
-    right: 24,
-    backgroundColor: '#fff',
-    borderRadius: 999,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: stylesConst.border,
-  },
-
-  activeButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: stylesConst.secondary,
   },
 });

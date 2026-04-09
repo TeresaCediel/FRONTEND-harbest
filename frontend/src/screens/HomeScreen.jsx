@@ -11,6 +11,7 @@ import {
 
 import ScreenContainer from "../components/common/ScreenContainer";
 import colors from "../styles/colors";
+import ClientTabBar from "../components/common/ClientTabBar"; // <-- IMPORTAMOS LA NUEVA BARRA
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -22,13 +23,12 @@ export default function HomeScreen({ navigation }) {
         >
           {/* HEADER */}
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-              <Ionicons
-                name="arrow-back"
-                size={24}
-                color={colors.text}
-                style={styles.backIcon}
-              />
+            {/* Opcional: Si no quieres flecha de atrás en el Home, puedes borrar este TouchableOpacity */}
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Login")}
+              style={styles.backIcon}
+            >
+              <Ionicons name="arrow-back" size={24} color={colors.text} />
             </TouchableOpacity>
 
             <View style={styles.headerTextBlock}>
@@ -36,10 +36,15 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.title}>Hola, Pepe</Text>
             </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("ProfileUser")}
+            >
+              {" "}
+              {/* <-- FUGA SELLADA (Iba a 'Home') */}
               <Image
                 source={require("../../assets/images/logo-harbest.png")}
                 style={styles.logoImage}
+                tintColor="#6E8B3D" // Añadimos tint para que sea verde como en el mockup si es un png transparente
               />
             </TouchableOpacity>
           </View>
@@ -96,28 +101,28 @@ export default function HomeScreen({ navigation }) {
 
           <View style={styles.categories}>
             <Category
-              color={colors.fruta}
+              color="#DE7B54" // Naranja (Frutas)
               icon="nutrition"
               text="Frutas"
               subtitle="Dulces y frescas"
               onPress={() => navigation.navigate("CategoryFruits")}
             />
             <Category
-              color={colors.primary}
+              color="#789A3D" // Verde (Verduras)
               icon="leaf"
               text="Verduras"
               subtitle="Del campo a casa"
               onPress={() => navigation.navigate("CategoryVegetables")}
             />
             <Category
-              color="#C9A46A"
+              color="#E8D499" // Mostaza (Especias)
               icon="flame"
               text="Especias"
               subtitle="Aroma y sabor"
               onPress={() => navigation.navigate("CategorySpices")}
             />
             <Category
-              color="#B8B8B8"
+              color="#BCBCBC" // Gris (Ver Todo)
               icon="grid"
               text="Ver todo"
               subtitle="Todo el catálogo"
@@ -171,29 +176,14 @@ export default function HomeScreen({ navigation }) {
           </ScrollView>
         </ScrollView>
 
-        {/* BOTTOM BAR */}
-        <View style={styles.bottomBar}>
-          <TouchableOpacity onPress={() => navigation.navigate("Search")}>
-            <Ionicons name="search-outline" size={18} color="#8A8A8A" />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate("Favorites")}>
-            <Ionicons name="heart-outline" size={20} color="#8A8A8A" />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
-            <Ionicons name="cart-outline" size={20} color="#8A8A8A" />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-            <Ionicons name="person-outline" size={20} color="#8A8A8A" />
-          </TouchableOpacity>
-        </View>
+        {/* BOTTOM BAR BLINDADA DEL CLIENTE */}
+        <ClientTabBar Navigation={navigation} ActiveRoute="Home" />
       </View>
     </ScreenContainer>
   );
 }
 
+// ... SUBCOMPONENTES INTACTOS ...
 const Category = ({ color, icon, text, subtitle, onPress }) => (
   <TouchableOpacity
     style={[styles.category, { backgroundColor: color }]}
@@ -247,45 +237,37 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F7F8F4",
   },
-
   scrollContent: {
     padding: 20,
-    paddingBottom: 110,
+    paddingBottom: 110, // Aumentado para dejar hueco a la barra flotante
   },
-
   logoImage: {
     width: 38,
     height: 38,
     resizeMode: "contain",
   },
-
   header: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 18,
   },
-
   backIcon: {
     marginRight: 12,
   },
-
   headerTextBlock: {
     flex: 1,
   },
-
   headerMini: {
     fontSize: 12,
     color: colors.textSoft,
     marginBottom: 2,
     fontWeight: "600",
   },
-
   title: {
     fontSize: 24,
     fontWeight: "800",
     color: colors.text,
   },
-
   heroCard: {
     backgroundColor: colors.white,
     borderColor: colors.primaryTr,
@@ -298,12 +280,10 @@ const styles = StyleSheet.create({
     minHeight: 180,
     justifyContent: "space-between",
   },
-
   heroContent: {
     width: "62%",
     zIndex: 2,
   },
-
   heroBadge: {
     alignSelf: "flex-start",
     backgroundColor: "rgba(125, 155, 69, 0.81)",
@@ -312,13 +292,11 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     marginBottom: 14,
   },
-
   heroBadgeText: {
     color: colors.primaryLight,
     fontSize: 12,
     fontWeight: "700",
   },
-
   heroTitle: {
     fontSize: 26,
     lineHeight: 32,
@@ -326,13 +304,11 @@ const styles = StyleSheet.create({
     color: colors.text,
     marginBottom: 10,
   },
-
   heroSubtitle: {
     fontSize: 14,
     lineHeight: 20,
     color: colors.textSoft,
   },
-
   heroImage: {
     position: "absolute",
     right: -8,
@@ -341,11 +317,9 @@ const styles = StyleSheet.create({
     height: 165,
     resizeMode: "contain",
   },
-
   searchWrapper: {
     marginBottom: 22,
   },
-
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -359,49 +333,41 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
   },
-
   searchIcon: {
     marginRight: 8,
   },
-
   search: {
     flex: 1,
     fontSize: 14,
     color: colors.text,
   },
-
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
     marginBottom: 14,
   },
-
   sectionTitle: {
     fontSize: 22,
     fontWeight: "800",
     color: colors.text,
   },
-
   sectionSubtitle: {
     fontSize: 13,
     color: colors.textSoft,
     marginTop: 2,
   },
-
   seeAllText: {
     fontSize: 13,
     fontWeight: "700",
     color: colors.primary,
   },
-
   categories: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
     marginBottom: 22,
   },
-
   category: {
     width: "48%",
     borderRadius: 22,
@@ -410,7 +376,6 @@ const styles = StyleSheet.create({
     minHeight: 118,
     justifyContent: "space-between",
   },
-
   categoryIconWrap: {
     width: 38,
     height: 38,
@@ -420,24 +385,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-
   categoryText: {
     color: "#fff",
     fontWeight: "800",
     fontSize: 16,
     marginBottom: 4,
   },
-
   categorySubtitle: {
     color: "rgba(255,255,255,0.88)",
     fontSize: 12,
     fontWeight: "500",
   },
-
   recommendedRow: {
     paddingRight: 10,
   },
-
   productCard: {
     width: 220,
     backgroundColor: "#fff",
@@ -450,17 +411,14 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 4,
   },
-
   productCardImage: {
     width: "100%",
     height: 130,
     resizeMode: "cover",
   },
-
   productCardContent: {
     padding: 14,
   },
-
   productCardBadge: {
     alignSelf: "flex-start",
     backgroundColor: "#EEF5E3",
@@ -472,7 +430,6 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     marginBottom: 10,
   },
-
   productCardName: {
     fontSize: 16,
     fontWeight: "800",
@@ -480,52 +437,26 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     minHeight: 40,
   },
-
   productCardSeller: {
     color: colors.textSoft,
     fontSize: 12,
     marginBottom: 14,
   },
-
   productCardFooter: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-
   productCardTime: {
     fontSize: 12,
     color: colors.textSoft,
     fontWeight: "600",
   },
-
   addButton: {
     width: 38,
     height: 38,
     borderRadius: 14,
     backgroundColor: colors.primary,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  bottomBar: {
-    position: "absolute",
-    bottom: 20,
-    left: 60,
-    right: 60,
-    backgroundColor: "#fff",
-    borderRadius: 74,
-    padding: 19,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  activeButton: {
-    backgroundColor: colors.white,
-    width: 44,
-    height: 44,
-    borderRadius: 22,
     justifyContent: "center",
     alignItems: "center",
   },

@@ -32,7 +32,7 @@ export default function StackNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="HomeAgricultor" // Lo mantenemos para tus pruebas
+        initialRouteName="Home" // Lo mantenemos para tus pruebas
         screenOptions={{ headerShown: false }}
       >
         {/* COMUNES */}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -6,51 +6,53 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-} from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import ScreenContainer from '../components/common/ScreenContainer';
+} from "react-native";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import ScreenContainer from "../components/common/ScreenContainer";
+import FarmerTabBar from "../components/common/FarmerTabBar"; // <-- IMPORTAMOS LA BARRA CORRECTA
 
-export default function FarmerInventoryScreen({ navigation }) {
+export default function InventoryScreen({ navigation }) {
+  // <-- RENOMBRADO PARA QUE COINCIDA CON EL STACK
   const inventory = [
     {
-      id: '1',
-      name: 'Tomate raff',
-      category: 'Hortalizas',
+      id: "1",
+      name: "Tomate raff",
+      category: "Hortalizas",
       stock: 48,
-      unit: 'kg',
-      status: 'Disponible',
+      unit: "kg",
+      status: "Disponible",
     },
     {
-      id: '2',
-      name: 'Calabacín',
-      category: 'Hortalizas',
+      id: "2",
+      name: "Calabacín",
+      category: "Hortalizas",
       stock: 12,
-      unit: 'kg',
-      status: 'Stock bajo',
+      unit: "kg",
+      status: "Stock bajo",
     },
     {
-      id: '3',
-      name: 'Naranjas',
-      category: 'Frutas',
+      id: "3",
+      name: "Naranjas",
+      category: "Frutas",
       stock: 86,
-      unit: 'kg',
-      status: 'Disponible',
+      unit: "kg",
+      status: "Disponible",
     },
     {
-      id: '4',
-      name: 'Lechuga romana',
-      category: 'Verduras',
+      id: "4",
+      name: "Lechuga romana",
+      category: "Verduras",
       stock: 0,
-      unit: 'uds',
-      status: 'Agotado',
+      unit: "uds",
+      status: "Agotado",
     },
     {
-      id: '5',
-      name: 'Pimiento rojo',
-      category: 'Hortalizas',
+      id: "5",
+      name: "Pimiento rojo",
+      category: "Hortalizas",
       stock: 19,
-      unit: 'kg',
-      status: 'Stock bajo',
+      unit: "kg",
+      status: "Stock bajo",
     },
   ];
 
@@ -82,8 +84,8 @@ export default function FarmerInventoryScreen({ navigation }) {
 
             <Text style={styles.headerTitle}>Inventario</Text>
             <Text style={styles.headerSubtitle}>
-              Controla el stock de tus productos, consulta disponibilidad y repón
-              mercancía cuando lo necesites.
+              Controla el stock de tus productos, consulta disponibilidad y
+              repón mercancía cuando lo necesites.
             </Text>
           </View>
 
@@ -132,8 +134,12 @@ export default function FarmerInventoryScreen({ navigation }) {
 
           {/* FILTROS */}
           <View style={styles.filterRow}>
-            <TouchableOpacity style={[styles.filterChip, styles.filterChipActive]}>
-              <Text style={[styles.filterText, styles.filterTextActive]}>Todos</Text>
+            <TouchableOpacity
+              style={[styles.filterChip, styles.filterChipActive]}
+            >
+              <Text style={[styles.filterText, styles.filterTextActive]}>
+                Todos
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.filterChip}>
@@ -169,8 +175,18 @@ export default function FarmerInventoryScreen({ navigation }) {
                     <Text style={styles.productCategory}>{item.category}</Text>
                   </View>
 
-                  <View style={[styles.statusBadge, getStatusBadgeStyle(item.status)]}>
-                    <Text style={[styles.statusText, getStatusTextStyle(item.status)]}>
+                  <View
+                    style={[
+                      styles.statusBadge,
+                      getStatusBadgeStyle(item.status),
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.statusText,
+                        getStatusTextStyle(item.status),
+                      ]}
+                    >
                       {item.status}
                     </Text>
                   </View>
@@ -185,11 +201,17 @@ export default function FarmerInventoryScreen({ navigation }) {
                   </View>
 
                   <View style={styles.actionButtons}>
-                    <TouchableOpacity style={styles.secondaryButton} activeOpacity={0.85}>
+                    <TouchableOpacity
+                      style={styles.secondaryButton}
+                      activeOpacity={0.85}
+                    >
                       <Text style={styles.secondaryButtonText}>Editar</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.primaryButton} activeOpacity={0.85}>
+                    <TouchableOpacity
+                      style={styles.primaryButton}
+                      activeOpacity={0.85}
+                    >
                       <Text style={styles.primaryButtonText}>Reponer</Text>
                     </TouchableOpacity>
                   </View>
@@ -199,24 +221,8 @@ export default function FarmerInventoryScreen({ navigation }) {
           </View>
         </ScrollView>
 
-        {/* BOTTOM BAR */}
-        <View style={styles.bottomBar}>
-          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
-            <Ionicons name="search-outline" size={20} color="#7B7B7B" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.activeButton}>
-            <MaterialCommunityIcons name="warehouse" size={18} color="#fff" />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('OrdersAgricultor')}>
-            <Ionicons name="receipt-outline" size={20} color="#7B7B7B" />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-            <Ionicons name="person-outline" size={20} color="#7B7B7B" />
-          </TouchableOpacity>
-        </View>
+        {/* BOTTOM BAR BLINDADA */}
+        <FarmerTabBar Navigation={navigation} ActiveRoute="ProfileAgricultor" />
       </View>
     </ScreenContainer>
   );
@@ -224,41 +230,41 @@ export default function FarmerInventoryScreen({ navigation }) {
 
 const getStatusBadgeStyle = (status) => {
   switch (status) {
-    case 'Disponible':
-      return { backgroundColor: '#E7F3E8' };
-    case 'Stock bajo':
-      return { backgroundColor: '#FBEBD8' };
-    case 'Agotado':
-      return { backgroundColor: '#F7E1DD' };
+    case "Disponible":
+      return { backgroundColor: "#E7F3E8" };
+    case "Stock bajo":
+      return { backgroundColor: "#FBEBD8" };
+    case "Agotado":
+      return { backgroundColor: "#F7E1DD" };
     default:
-      return { backgroundColor: '#EFEFEF' };
+      return { backgroundColor: "#EFEFEF" };
   }
 };
 
 const getStatusTextStyle = (status) => {
   switch (status) {
-    case 'Disponible':
-      return { color: '#3E7A4A' };
-    case 'Stock bajo':
-      return { color: '#A06A2C' };
-    case 'Agotado':
-      return { color: '#B3533D' };
+    case "Disponible":
+      return { color: "#3E7A4A" };
+    case "Stock bajo":
+      return { color: "#A06A2C" };
+    case "Agotado":
+      return { color: "#B3533D" };
     default:
-      return { color: '#666' };
+      return { color: "#666" };
   }
 };
 
 const theme = {
-  bg: '#F6F4EE',
-  card: '#FFFFFF',
-  primary: '#6E8B3D',
-  primaryDark: '#4F672A',
-  secondary: '#D25E2C',
-  secondarySoft: '#FBE5DC',
-  border: '#E6E1D5',
-  textDark: '#3D3A34',
-  textSoft: '#7B766D',
-  highlight: '#F3F0E2',
+  bg: "#F6F4EE",
+  card: "#FFFFFF",
+  primary: "#6E8B3D",
+  primaryDark: "#4F672A",
+  secondary: "#D25E2C",
+  secondarySoft: "#FBE5DC",
+  border: "#E6E1D5",
+  textDark: "#3D3A34",
+  textSoft: "#7B766D",
+  highlight: "#F3F0E2",
 };
 
 const styles = StyleSheet.create({
@@ -270,7 +276,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 18,
     paddingTop: 18,
-    paddingBottom: 120,
+    paddingBottom: 120, // Ajustado para que el TabBar no tape nada
   },
 
   header: {
@@ -278,9 +284,9 @@ const styles = StyleSheet.create({
   },
 
   headerTopRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 18,
   },
 
@@ -288,9 +294,9 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 1,
     borderColor: theme.border,
   },
@@ -299,16 +305,16 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 1,
     borderColor: theme.border,
   },
 
   headerTitle: {
     fontSize: 28,
-    fontWeight: '800',
+    fontWeight: "800",
     color: theme.textDark,
     marginBottom: 8,
   },
@@ -321,26 +327,26 @@ const styles = StyleSheet.create({
   },
 
   statsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 18,
     gap: 10,
   },
 
   statCard: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 18,
     paddingVertical: 16,
     paddingHorizontal: 10,
-    alignItems: 'center',
+    alignItems: "center",
     borderWidth: 1,
     borderColor: theme.border,
   },
 
   statNumber: {
     fontSize: 20,
-    fontWeight: '800',
+    fontWeight: "800",
     color: theme.textDark,
     marginTop: 8,
     marginBottom: 4,
@@ -348,20 +354,20 @@ const styles = StyleSheet.create({
 
   statLabel: {
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
     color: theme.textSoft,
-    textAlign: 'center',
+    textAlign: "center",
   },
 
   searchBox: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 16,
     borderWidth: 1,
     borderColor: theme.border,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
   },
 
@@ -373,14 +379,14 @@ const styles = StyleSheet.create({
   },
 
   filterRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     marginBottom: 20,
     gap: 10,
   },
 
   filterChip: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: theme.border,
     borderRadius: 999,
@@ -390,18 +396,18 @@ const styles = StyleSheet.create({
 
   filterChipActive: {
     backgroundColor: theme.highlight,
-    borderColor: '#E4D9BC',
+    borderColor: "#E4D9BC",
   },
 
   filterText: {
     color: theme.textSoft,
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 
   filterTextActive: {
-    color: '#8D5B2D',
-    fontWeight: '700',
+    color: "#8D5B2D",
+    fontWeight: "700",
   },
 
   section: {
@@ -410,13 +416,13 @@ const styles = StyleSheet.create({
 
   sectionTitle: {
     fontSize: 19,
-    fontWeight: '800',
+    fontWeight: "800",
     color: theme.textDark,
     marginBottom: 12,
   },
 
   productCard: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 20,
     borderWidth: 1,
     borderColor: theme.border,
@@ -425,8 +431,8 @@ const styles = StyleSheet.create({
   },
 
   productTopRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
   },
 
@@ -435,8 +441,8 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 14,
     backgroundColor: theme.secondarySoft,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 12,
   },
 
@@ -446,14 +452,14 @@ const styles = StyleSheet.create({
 
   productName: {
     fontSize: 16,
-    fontWeight: '800',
+    fontWeight: "800",
     color: theme.textDark,
     marginBottom: 4,
   },
 
   productCategory: {
     fontSize: 13,
-    fontWeight: '500',
+    fontWeight: "500",
     color: theme.textSoft,
   },
 
@@ -466,30 +472,30 @@ const styles = StyleSheet.create({
 
   statusText: {
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: "700",
   },
 
   stockRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 
   stockLabel: {
     fontSize: 13,
     color: theme.textSoft,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 4,
   },
 
   stockValue: {
     fontSize: 20,
-    fontWeight: '800',
+    fontWeight: "800",
     color: theme.textDark,
   },
 
   actionButtons: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
 
   secondaryButton: {
@@ -498,14 +504,14 @@ const styles = StyleSheet.create({
     borderColor: theme.border,
     paddingHorizontal: 14,
     paddingVertical: 10,
-    backgroundColor: '#FAFAF8',
+    backgroundColor: "#FAFAF8",
     marginRight: 8,
   },
 
   secondaryButtonText: {
     color: theme.textDark,
     fontSize: 13,
-    fontWeight: '700',
+    fontWeight: "700",
   },
 
   primaryButton: {
@@ -516,33 +522,8 @@ const styles = StyleSheet.create({
   },
 
   primaryButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 13,
-    fontWeight: '800',
-  },
-
-  bottomBar: {
-    position: 'absolute',
-    bottom: 18,
-    left: 24,
-    right: 24,
-    backgroundColor: '#fff',
-    borderRadius: 999,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: theme.border,
-  },
-
-  activeButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: theme.secondary,
+    fontWeight: "800",
   },
 });
