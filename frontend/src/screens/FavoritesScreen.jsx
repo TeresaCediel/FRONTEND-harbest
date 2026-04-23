@@ -1,53 +1,24 @@
 import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
   Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-import colors from "../styles/colors";
+import ClientTabBar from "../components/common/ClientTabBar";
 import ScreenContainer from "../components/common/ScreenContainer";
-import ClientTabBar from "../components/common/ClientTabBar"; // <-- IMPORTAMOS LA BARRA CORRECTA
+import { useCart } from "../context/CartContext";
+import { useFavorites } from "../context/FavoritesContext";
+import colors from "../styles/colors";
+import { formatUnitPrice } from "../utils/formatPrice";
 
 export default function FavoritesScreen({ navigation }) {
-  const favorites = [
-    {
-      id: 1,
-      name: "Naranjas Valencianas",
-      seller: "Granjas Jaume",
-      price: "4,90 €/kg",
-      badge: "Fresco",
-      image: require("../../assets/images/comida/naranjas.webp"),
-    },
-    {
-      id: 2,
-      name: "Aguacates de Granada",
-      seller: "Illo verdulerías",
-      price: "6,20 €/kg",
-      badge: "Orgánico",
-      image: require("../../assets/images/comida/aguacate.webp"),
-    },
-    {
-      id: 3,
-      name: "Pimentón de la Vera",
-      seller: "Antonio & Co",
-      price: "3,80 €",
-      badge: "Exclusivo",
-      image: require("../../assets/images/comida/pimenton.jpg"),
-    },
-    {
-      id: 4,
-      name: "Fresas de temporada",
-      seller: "Huerta del Sur",
-      price: "5,10 €/kg",
-      badge: "Popular",
-      image: require("../../assets/images/comida/fresas.jpg"),
-    },
-  ];
+  const { favorites, removeFavorite } = useFavorites();
+  const { addToCart } = useCart();
 
   return (
     <ScreenContainer>
@@ -56,28 +27,27 @@ export default function FavoritesScreen({ navigation }) {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
         >
-          {/* HEADER VERDE */}
           <View style={styles.topSection}>
             <View style={styles.topRow}>
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={22} color="#fff" />
               </TouchableOpacity>
 
-              {/* FUGA SELLADA: El logo ahora va al Home correcto */}
-              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-                <Image
-                  source={require("../../assets/images/logo-harbest.png")}
-                  style={styles.logoImage}
-                  tintColor="#FFF"
-                />
-              </TouchableOpacity>
+              <View style={styles.headerActions}>
+                <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                  <Image
+                    source={require("../../assets/images/logo-harbest.png")}
+                    style={styles.logoImage}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
 
             <View style={styles.headerTextBlock}>
-              <Text style={styles.headerMiniText}>Tu selección guardada</Text>
+              <Text style={styles.headerMiniText}>Tu seleccion guardada</Text>
               <Text style={styles.headerTitle}>Favoritos</Text>
               <Text style={styles.headerSubtitle}>
-                Accede rápidamente a los productos que más te interesan y vuelve
+                Accede rapidamente a los productos que mas te interesan y vuelve
                 a comprarlos cuando quieras.
               </Text>
             </View>
@@ -86,7 +56,6 @@ export default function FavoritesScreen({ navigation }) {
             <View style={styles.decorLeafTwo} />
           </View>
 
-          {/* RESUMEN */}
           <View style={styles.summaryCard}>
             <View>
               <Text style={styles.summaryLabel}>Productos guardados</Text>
@@ -98,7 +67,6 @@ export default function FavoritesScreen({ navigation }) {
             </View>
           </View>
 
-          {/* CABECERA SECCIÓN */}
           <View style={styles.sectionHeader}>
             <View>
               <Text style={styles.sectionTitle}>Tus favoritos</Text>
@@ -106,30 +74,50 @@ export default function FavoritesScreen({ navigation }) {
                 Productos guardados recientemente
               </Text>
             </View>
-
-            <TouchableOpacity>
-              <Text style={styles.seeAllText}>Gestionar</Text>
-            </TouchableOpacity>
           </View>
 
-          {/* LISTADO */}
-          {favorites.map((item) => (
-            <FavoriteCard key={item.id} item={item} navigation={navigation} />
-          ))}
+          {favorites.length > 0 ? (
+            favorites.map((item) => (
+              <FavoriteCard
+                key={item.id}
+                item={item}
+                navigation={navigation}
+                onRemove={() => removeFavorite(item.id)}
+                onAddToCart={() => {
+                  addToCart(item, 1);
+                  navigation.navigate("Cart");
+                }}
+              />
+            ))
+          ) : (
+            <View style={styles.emptyState}>
+              <Ionicons name="heart-outline" size={32} color={colors.primary} />
+              <Text style={styles.emptyTitle}>No tienes favoritos</Text>
+              <Text style={styles.emptySubtitle}>
+                Guarda productos desde su detalle para encontrarlos aqui.
+              </Text>
+              <TouchableOpacity
+                style={styles.exploreButton}
+                onPress={() => navigation.navigate("Home")}
+                activeOpacity={0.85}
+              >
+                <Text style={styles.exploreButtonText}>Explorar productos</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </ScrollView>
 
-        {/* BOTTOM BAR BLINDADA DEL CLIENTE */}
         <ClientTabBar Navigation={navigation} ActiveRoute="Favorites" />
       </View>
     </ScreenContainer>
   );
 }
 
-const FavoriteCard = ({ item, navigation }) => (
+const FavoriteCard = ({ item, navigation, onRemove, onAddToCart }) => (
   <TouchableOpacity
     style={styles.card}
     activeOpacity={0.88}
-    onPress={() => navigation.navigate("ProductDetail")}
+    onPress={() => navigation.navigate("ProductDetail", { productId: item.id })}
   >
     <Image source={item.image} style={styles.cardImage} />
 
@@ -137,7 +125,7 @@ const FavoriteCard = ({ item, navigation }) => (
       <View style={styles.cardTopRow}>
         <Text style={styles.cardBadge}>{item.badge}</Text>
 
-        <TouchableOpacity style={styles.iconButton} activeOpacity={0.8}>
+        <TouchableOpacity style={styles.iconButton} onPress={onRemove} activeOpacity={0.8}>
           <Ionicons name="heart" size={16} color={colors.primary} />
         </TouchableOpacity>
       </View>
@@ -151,13 +139,9 @@ const FavoriteCard = ({ item, navigation }) => (
       </Text>
 
       <View style={styles.cardFooter}>
-        <Text style={styles.cardPrice}>{item.price}</Text>
+        <Text style={styles.cardPrice}>{formatUnitPrice(item.price, item.unit)}</Text>
 
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => navigation.navigate("Cart")}
-          activeOpacity={0.85}
-        >
+        <TouchableOpacity style={styles.addButton} onPress={onAddToCart} activeOpacity={0.85}>
           <Ionicons name="cart" size={15} color="#fff" />
         </TouchableOpacity>
       </View>
@@ -171,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7F8F4",
   },
   scrollContent: {
-    paddingBottom: 120, // Espacio para que el TabBar no tape nada
+    paddingBottom: 120,
   },
   topSection: {
     backgroundColor: colors.primary,
@@ -188,6 +172,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 26,
+  },
+  headerActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   logoImage: {
     width: 40,
@@ -218,45 +207,44 @@ const styles = StyleSheet.create({
   decorLeafOne: {
     position: "absolute",
     right: 24,
-    bottom: 26,
-    width: 56,
-    height: 56,
+    bottom: 30,
+    width: 52,
+    height: 52,
     borderRadius: 20,
     backgroundColor: "rgba(255,255,255,0.08)",
     transform: [{ rotate: "28deg" }],
   },
   decorLeafTwo: {
     position: "absolute",
-    right: 60,
-    bottom: 46,
-    width: 28,
-    height: 28,
+    right: 58,
+    bottom: 48,
+    width: 26,
+    height: 26,
     borderRadius: 12,
     backgroundColor: "rgba(255,255,255,0.10)",
     transform: [{ rotate: "-20deg" }],
   },
   summaryCard: {
     marginHorizontal: 20,
-    marginTop: -18,
-    marginBottom: 24,
+    marginTop: 18,
+    marginBottom: 20,
     backgroundColor: "#fff",
     borderRadius: 24,
-    paddingHorizontal: 18,
-    paddingVertical: 18,
+    padding: 18,
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    shadowColor: "#000",
+    justifyContent: "space-between",
+    shadowColor: "#4a5f18b4",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.04,
     shadowRadius: 10,
     elevation: 4,
   },
   summaryLabel: {
-    fontSize: 12,
-    fontWeight: "700",
+    fontSize: 13,
     color: colors.textSoft,
-    marginBottom: 6,
+    fontWeight: "700",
+    marginBottom: 5,
   },
   summaryValue: {
     fontSize: 26,
@@ -274,9 +262,6 @@ const styles = StyleSheet.create({
   sectionHeader: {
     marginHorizontal: 20,
     marginBottom: 14,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
   },
   sectionTitle: {
     fontSize: 22,
@@ -288,17 +273,13 @@ const styles = StyleSheet.create({
     color: colors.textSoft,
     marginTop: 2,
   },
-  seeAllText: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: colors.primary,
-  },
   card: {
     marginHorizontal: 20,
-    marginBottom: 14,
     backgroundColor: "#fff",
     borderRadius: 24,
-    overflow: "hidden",
+    padding: 12,
+    flexDirection: "row",
+    marginBottom: 14,
     shadowColor: "#4a5f18b4",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.04,
@@ -306,64 +287,100 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   cardImage: {
-    width: "100%",
-    height: 170,
+    width: 105,
+    height: 112,
+    borderRadius: 18,
     resizeMode: "cover",
+    marginRight: 14,
   },
   cardContent: {
-    padding: 16,
+    flex: 1,
   },
   cardTopRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: 8,
   },
   cardBadge: {
-    alignSelf: "flex-start",
     backgroundColor: "#EEF5E3",
     color: colors.primary,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     borderRadius: 999,
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: "800",
   },
   iconButton: {
-    width: 34,
-    height: 34,
+    width: 32,
+    height: 32,
     borderRadius: 12,
     backgroundColor: "#F8F8F5",
     justifyContent: "center",
     alignItems: "center",
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "800",
     color: colors.text,
-    marginBottom: 4,
+    marginBottom: 5,
   },
   cardSeller: {
-    fontSize: 13,
+    fontSize: 12,
     color: colors.textSoft,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   cardFooter: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "space-between",
   },
   cardPrice: {
-    fontSize: 15,
+    flex: 1,
+    color: colors.primary,
+    fontSize: 14,
     fontWeight: "800",
-    color: colors.text,
+    marginRight: 8,
   },
   addButton: {
-    width: 38,
-    height: 38,
-    borderRadius: 14,
+    width: 36,
+    height: 36,
+    borderRadius: 13,
     backgroundColor: colors.primary,
     justifyContent: "center",
     alignItems: "center",
+  },
+  emptyState: {
+    marginHorizontal: 20,
+    backgroundColor: "#fff",
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 30,
+    alignItems: "center",
+  },
+  emptyTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: colors.text,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  emptySubtitle: {
+    fontSize: 13,
+    color: colors.textSoft,
+    textAlign: "center",
+    lineHeight: 20,
+    marginBottom: 16,
+  },
+  exploreButton: {
+    backgroundColor: colors.primary,
+    borderRadius: 999,
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+  },
+  exploreButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "800",
   },
 });

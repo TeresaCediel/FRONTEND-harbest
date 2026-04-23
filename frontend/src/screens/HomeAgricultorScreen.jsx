@@ -7,230 +7,377 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 import FarmerTabBar from "../components/common/FarmerTabBar";
 import ScreenContainer from "../components/common/ScreenContainer";
+import { useDisplaySettings } from "../context/DisplaySettingsContext";
+import { mockProducts } from "../data/mockProducts";
+import { getDisplayMode } from "../styles/displayModes";
+import { ROLE_THEMES } from "../styles/roleThemes";
 
 export default function HomeAgricultorScreen({ navigation }) {
-  const FarmerColor = "#d25e2c";
+  const { settings } = useDisplaySettings();
+  const display = getDisplayMode(settings, ROLE_THEMES.farmer);
+  const latestProducts = mockProducts.slice(0, 3);
 
   return (
     <ScreenContainer>
-      <View style={Styles.MainContainer}>
+      <View style={[styles.container, { backgroundColor: display.background }]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={Styles.ScrollPadding}
+          contentContainerStyle={styles.scrollContent}
         >
-          {/* CABECERA */}
-          <View style={Styles.HeaderRow}>
+          <View style={styles.header}>
             <TouchableOpacity
-              style={Styles.HeaderLeft}
-              onPress={() => navigation.goBack()}
+              style={styles.headerLeft}
+              onPress={() => navigation.navigate("Splash")}
+              activeOpacity={0.85}
             >
-              <Ionicons name="arrow-back" size={22} color="#8A8A8A" />
-              <Text style={Styles.HeaderText}>Inicio</Text>
+              <Ionicons name="arrow-back" size={22} color={display.text} />
+              <Text style={[styles.headerText, { color: display.text }]}>Inicio</Text>
             </TouchableOpacity>
 
-            <View style={Styles.HeaderRight}>
-              <TouchableOpacity style={{ marginRight: 8 }}>
-                <Ionicons name="ellipsis-vertical" size={20} color="#8A8A8A" />
-              </TouchableOpacity>
+            <View style={styles.headerRight}>
               <TouchableOpacity
+                style={[
+                  styles.logoButton,
+                  { backgroundColor: display.surface, borderColor: display.border },
+                ]}
                 onPress={() => navigation.navigate("ProfileAgricultor")}
+                activeOpacity={0.85}
               >
-                <View
-                  style={[Styles.LogoCircle, { backgroundColor: FarmerColor }]}
-                >
-                  <Image
-                    source={require("../../assets/images/logo-harbest.png")}
-                    style={Styles.TopLogo}
-                    tintColor="#FFF"
-                  />
-                </View>
+                <Image source={ROLE_THEMES.farmer.logo} style={styles.logoImage} />
               </TouchableOpacity>
             </View>
           </View>
 
-          {/* BUSCADOR */}
           <TouchableOpacity
-            style={Styles.SearchBar}
-            activeOpacity={0.8}
+            style={[
+              styles.searchBar,
+              { backgroundColor: display.surface, borderColor: display.border },
+            ]}
+            activeOpacity={0.85}
             onPress={() => navigation.navigate("SearchAgricultor")}
           >
-            <Ionicons name="search" size={18} color="#B8B8B8" />
-            <Text style={Styles.SearchInputText}>Buscar productos...</Text>
+            <Ionicons name="search" size={18} color={display.icon} />
+            <Text style={[styles.searchText, { color: display.textSoft }]}>
+              Buscar productos...
+            </Text>
           </TouchableOpacity>
 
-          {/* TÍTULO */}
-          <Text style={Styles.MainTitle}>Mis Productos</Text>
+          <View
+            style={[
+              styles.heroCard,
+              {
+                backgroundColor: display.surface,
+                borderColor: display.border,
+                shadowColor: display.shadow,
+              },
+            ]}
+          >
+            <View style={styles.heroContent}>
+              <View style={[styles.heroBadge, { backgroundColor: display.primarySoft }]}>
+                <Text style={[styles.heroBadgeText, { color: display.primary }]}>Panel agricultor</Text>
+              </View>
 
-          {/* CATEGORÍAS */}
-          <View style={Styles.Grid}>
-            <CategoryItem Color="#DE7B54" Icon="logo-apple" Title="FRUTAS" />
-            <CategoryItem Color="#789A3D" Icon="leaf" Title="VERDURAS" />
-            <CategoryItem Color="#E8D499" Icon="nutrition" Title="ESPECIAS" />
-            <CategoryItem
-              Color="#BCBCBC"
-              Icon="barcode-outline"
-              Title="VER TODO"
-            />
+              <Text style={[styles.heroTitle, { color: display.text }]}>
+                Gestiona tu campo{"\n"}desde Harbest
+              </Text>
+
+              <Text style={[styles.heroSubtitle, { color: display.textSoft }]}>
+                Controla productos, stock y pedidos con una vista clara de tu actividad.
+              </Text>
+            </View>
+
+            <Image source={ROLE_THEMES.farmer.logo} style={styles.heroImage} />
           </View>
 
-          {/* ÚLTIMOS AÑADIDOS */}
-          <Text style={Styles.SectionTitle}>Últimos añadidos...</Text>
+          <Text style={[styles.mainTitle, { color: display.text }]}>Mis productos</Text>
 
-          <View style={Styles.ProductList}>
-            <ProductCard
-              Name="NARANJAS"
-              Qty="20 kg"
-              Date="Hace 11 min"
-              BgImg="#FF9800"
-            />
-            <ProductCard
-              Name="AGUACATES"
-              Qty="12 kg"
-              Date="Hace 45 min"
-              BgImg="#4CAF50"
-            />
-            <ProductCard
-              Name="PIMIENTA NEGRA"
-              Qty="4 kg"
-              Date="Hace 2 h"
-              BgImg="#795548"
-            />
+          <View style={styles.categories}>
+            <CategoryItem color={display.categoryColors[0]} icon="logo-apple" title="FRUTAS" />
+            <CategoryItem color={display.categoryColors[1]} icon="leaf" title="VERDURAS" />
+            <CategoryItem color={display.categoryColors[2]} icon="nutrition" title="ESPECIAS" />
+            <CategoryItem color={display.categoryColors[3]} icon="barcode-outline" title="VER TODO" />
+          </View>
+
+          <View style={styles.sectionHeader}>
+            <View>
+              <Text style={[styles.sectionTitle, { color: display.text }]}>Ultimos añadidos</Text>
+              <Text style={[styles.sectionSubtitle, { color: display.textSoft }]}>Productos visibles en tu inventario</Text>
+            </View>
+
+            <TouchableOpacity onPress={() => navigation.navigate("Inventory")}>
+              <Text style={[styles.seeAllText, { color: display.primary }]}>Ver todo</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.productList}>
+            {latestProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                display={display}
+                onPress={() => navigation.navigate("Inventory")}
+              />
+            ))}
           </View>
         </ScrollView>
 
-        {/* BARRA DE NAVEGACIÓN REUTILIZABLE */}
         <FarmerTabBar Navigation={navigation} ActiveRoute="HomeAgricultor" />
       </View>
     </ScreenContainer>
   );
 }
 
-// SUB-COMPONENTES
-const CategoryItem = ({ Color, Icon, Title }) => (
+const CategoryItem = ({ color, icon, title }) => (
   <TouchableOpacity
-    style={[Styles.CategoryBox, { backgroundColor: Color }]}
+    style={[styles.categoryBox, { backgroundColor: color }]}
     activeOpacity={0.9}
   >
-    <Ionicons name={Icon} size={24} color="#FFF" style={{ marginRight: 8 }} />
-    <Text style={Styles.CategoryTitle}>{Title}</Text>
+    <Ionicons name={icon} size={22} color="#FFF" style={styles.categoryIcon} />
+    <Text style={styles.categoryTitle}>{title}</Text>
   </TouchableOpacity>
 );
 
-const ProductCard = ({ Name, Qty, Date, BgImg }) => (
-  <TouchableOpacity style={Styles.Card} activeOpacity={0.8}>
-    <View style={[Styles.CardImgPlaceholder, { backgroundColor: BgImg }]} />
-    <View style={Styles.CardInfo}>
-      <Text style={Styles.CardName}>{Name}</Text>
-      <Text style={Styles.CardQty}>{Qty}</Text>
+const ProductCard = ({ product, display, onPress }) => (
+  <TouchableOpacity
+    style={[
+      styles.card,
+      {
+        backgroundColor: display.surface,
+        borderColor: display.border,
+        shadowColor: display.shadow,
+      },
+    ]}
+    onPress={onPress}
+    activeOpacity={0.86}
+  >
+    <Image source={product.image} style={styles.cardImage} />
+
+    <View style={styles.cardInfo}>
+      <Text style={[styles.cardName, { color: display.text }]} numberOfLines={1}>
+        {product.name}
+      </Text>
+      <Text style={[styles.cardQty, { color: display.textSoft }]}>
+        {product.stock} {product.unit} disponibles
+      </Text>
     </View>
-    <Text style={Styles.CardDate}>{Date}</Text>
+
+    <View style={[styles.cardBadge, { backgroundColor: display.primarySoft }]}>
+      <Text style={[styles.cardBadgeText, { color: display.primary }]}>{product.category}</Text>
+    </View>
   </TouchableOpacity>
 );
 
-// ESTILOS
-const Styles = StyleSheet.create({
-  MainContainer: { flex: 1, backgroundColor: "#F8F8F8" },
-  ScrollPadding: { paddingHorizontal: 25, paddingTop: 10, paddingBottom: 110 },
-
-  HeaderRow: {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: ROLE_THEMES.farmer.background,
+  },
+  scrollContent: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    paddingBottom: 110,
+  },
+  header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 18,
   },
-  HeaderLeft: { flexDirection: "row", alignItems: "center" },
-  HeaderText: {
-    fontSize: 18,
-    color: "#8A8A8A",
-    marginLeft: 10,
-    fontWeight: "500",
-  },
-  HeaderRight: { flexDirection: "row", alignItems: "center" },
-  LogoCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  TopLogo: { width: 20, height: 20, resizeMode: "contain" },
-
-  SearchBar: {
+  headerLeft: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF",
-    borderRadius: 25,
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    marginBottom: 25,
-    borderWidth: 1,
-    borderColor: "#EFEFEF",
   },
-  SearchInputText: { marginLeft: 10, fontSize: 14, color: "#B8B8B8" },
-
-  MainTitle: {
-    fontSize: 24,
+  headerRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  headerText: {
+    fontSize: 18,
+    color: ROLE_THEMES.farmer.text,
+    marginLeft: 10,
     fontWeight: "700",
-    color: "#7A7A7A",
+  },
+  logoButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 16,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#F1D3C5",
+  },
+  logoImage: {
+    width: 34,
+    height: 34,
+    resizeMode: "contain",
+  },
+  searchBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: "#F1D3C5",
+  },
+  searchText: {
+    marginLeft: 10,
+    fontSize: 14,
+    color: ROLE_THEMES.farmer.textSoft,
+  },
+  heroCard: {
+    backgroundColor: "#fff",
+    borderColor: "#F1D3C5",
+    borderWidth: 2,
+    borderRadius: 28,
+    padding: 20,
+    marginBottom: 20,
+    minHeight: 178,
+    overflow: "hidden",
+    position: "relative",
+  },
+  heroContent: {
+    width: "66%",
+    zIndex: 2,
+  },
+  heroBadge: {
+    alignSelf: "flex-start",
+    backgroundColor: ROLE_THEMES.farmer.primarySoft,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 999,
+    marginBottom: 12,
+  },
+  heroBadgeText: {
+    color: ROLE_THEMES.farmer.primary,
+    fontSize: 12,
+    fontWeight: "800",
+  },
+  heroTitle: {
+    fontSize: 25,
+    lineHeight: 31,
+    fontWeight: "800",
+    color: ROLE_THEMES.farmer.text,
+    marginBottom: 8,
+  },
+  heroSubtitle: {
+    fontSize: 13,
+    lineHeight: 19,
+    color: ROLE_THEMES.farmer.textSoft,
+  },
+  heroImage: {
+    position: "absolute",
+    right: 8,
+    bottom: 8,
+    width: 116,
+    height: 116,
+    resizeMode: "contain",
+  },
+  mainTitle: {
+    fontSize: 24,
+    fontWeight: "800",
+    color: ROLE_THEMES.farmer.text,
     marginBottom: 15,
   },
-
-  Grid: {
+  categories: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    marginBottom: 25,
+    marginBottom: 22,
   },
-  CategoryBox: {
+  categoryBox: {
     width: "48%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 12,
+    borderRadius: 18,
     paddingVertical: 18,
     marginBottom: 12,
   },
-  CategoryTitle: { color: "#FFF", fontWeight: "700", fontSize: 13 },
-
-  SectionTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#8A8A8A",
-    marginBottom: 12,
+  categoryIcon: {
+    marginRight: 8,
   },
-
-  ProductList: { gap: 10 },
-  Card: {
+  categoryTitle: {
+    color: "#fff",
+    fontWeight: "800",
+    fontSize: 13,
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    marginBottom: 14,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: ROLE_THEMES.farmer.text,
+  },
+  sectionSubtitle: {
+    fontSize: 13,
+    color: ROLE_THEMES.farmer.textSoft,
+    marginTop: 2,
+  },
+  seeAllText: {
+    fontSize: 13,
+    color: ROLE_THEMES.farmer.primary,
+    fontWeight: "800",
+  },
+  productList: {
+    gap: 12,
+  },
+  card: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF",
-    borderRadius: 16,
-    padding: 10,
-    elevation: 1,
-    shadowColor: "#000",
-    shadowOpacity: 0.04,
-    shadowRadius: 5,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: "#F1D3C5",
+    shadowColor: "#8B3E24",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
-  CardImgPlaceholder: {
-    width: 55,
-    height: 55,
-    borderRadius: 12,
+  cardImage: {
+    width: 62,
+    height: 62,
+    borderRadius: 14,
+    resizeMode: "cover",
     marginRight: 15,
   },
-  CardInfo: { flex: 1, justifyContent: "center" },
-  CardName: {
-    fontWeight: "700",
-    color: "#7A7A7A",
-    fontSize: 14,
-    marginBottom: 4,
+  cardInfo: {
+    flex: 1,
+    justifyContent: "center",
   },
-  CardQty: { fontSize: 12, color: "#A8A8A8" },
-  CardDate: {
-    fontSize: 11,
-    color: "#B8B8B8",
-    alignSelf: "flex-end",
+  cardName: {
+    fontWeight: "800",
+    color: ROLE_THEMES.farmer.text,
+    fontSize: 15,
     marginBottom: 5,
+  },
+  cardQty: {
+    fontSize: 12,
+    color: ROLE_THEMES.farmer.textSoft,
+  },
+  cardBadge: {
+    backgroundColor: ROLE_THEMES.farmer.primarySoft,
+    borderRadius: 999,
+    paddingHorizontal: 9,
+    paddingVertical: 6,
+    marginLeft: 8,
+  },
+  cardBadgeText: {
+    fontSize: 11,
+    color: ROLE_THEMES.farmer.primary,
+    fontWeight: "800",
   },
 });

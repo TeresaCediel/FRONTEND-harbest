@@ -11,12 +11,18 @@ import {
 
 import ScreenContainer from "../components/common/ScreenContainer";
 import colors from "../styles/colors";
-import ClientTabBar from "../components/common/ClientTabBar"; // <-- IMPORTAMOS LA NUEVA BARRA
+import ClientTabBar from "../components/common/ClientTabBar";
+import { useDisplaySettings } from "../context/DisplaySettingsContext";
+import { getDisplayMode } from "../styles/displayModes";
+import { ROLE_THEMES } from "../styles/roleThemes";
 
 export default function HomeScreen({ navigation }) {
+  const { settings } = useDisplaySettings();
+  const display = getDisplayMode(settings, ROLE_THEMES.user);
+
   return (
     <ScreenContainer>
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: display.background }]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
@@ -25,42 +31,44 @@ export default function HomeScreen({ navigation }) {
           <View style={styles.header}>
             {/* Opcional: Si no quieres flecha de atrás en el Home, puedes borrar este TouchableOpacity */}
             <TouchableOpacity
-              onPress={() => navigation.navigate("Login")}
+              onPress={() => navigation.navigate("Splash")}
               style={styles.backIcon}
             >
-              <Ionicons name="arrow-back" size={24} color={colors.text} />
+              <Ionicons name="arrow-back" size={24} color={display.text} />
             </TouchableOpacity>
 
             <View style={styles.headerTextBlock}>
-              <Text style={styles.headerMini}>Bienvenido de nuevo</Text>
-              <Text style={styles.title}>Hola, Pepe</Text>
+              <Text style={[styles.headerMini, { color: display.textSoft }]}>Bienvenido de nuevo</Text>
+              <Text style={[styles.title, { color: display.text }]}>Hola, Pepe</Text>
             </View>
 
-            <TouchableOpacity
-              onPress={() => navigation.navigate("ProfileUser")}
-            >
-              {" "}
-              {/* <-- FUGA SELLADA (Iba a 'Home') */}
-              <Image
-                source={require("../../assets/images/logo-harbest.png")}
-                style={styles.logoImage}
-                tintColor="#6E8B3D" // Añadimos tint para que sea verde como en el mockup si es un png transparente
-              />
-            </TouchableOpacity>
+            <View style={styles.headerActions}>
+              <TouchableOpacity onPress={() => navigation.navigate("ProfileUser")}>
+                <Image
+                  source={require("../../assets/images/logo-harbest.png")}
+                  style={styles.logoImage}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* HERO */}
-          <View style={styles.heroCard}>
+          <View
+            style={[
+              styles.heroCard,
+              { backgroundColor: display.surface, borderColor: display.border },
+            ]}
+          >
             <View style={styles.heroContent}>
-              <View style={styles.heroBadge}>
-                <Text style={styles.heroBadgeText}>Harbest Market</Text>
+              <View style={[styles.heroBadge, { backgroundColor: display.primary }]}>
+                <Text style={[styles.heroBadgeText, { color: settings.highContrast ? "#000" : colors.primaryLight }]}>Harbest Market</Text>
               </View>
 
-              <Text style={styles.heroTitle}>
+              <Text style={[styles.heroTitle, { color: display.text }]}>
                 Frescura real,{"\n"}directa del campo
               </Text>
 
-              <Text style={styles.heroSubtitle}>
+              <Text style={[styles.heroSubtitle, { color: display.textSoft }]}>
                 Compra frutas, verduras y especias de proximidad sin
                 intermediarios.
               </Text>
@@ -74,17 +82,26 @@ export default function HomeScreen({ navigation }) {
 
           {/* SEARCH */}
           <View style={styles.searchWrapper}>
-            <View style={styles.searchContainer}>
+            <View
+              style={[
+                styles.searchContainer,
+                {
+                  backgroundColor: display.surface,
+                  borderColor: display.border,
+                  borderWidth: 1,
+                },
+              ]}
+            >
               <Ionicons
                 name="search"
                 size={18}
-                color={colors.textSoft}
+                color={display.icon}
                 style={styles.searchIcon}
               />
               <TextInput
                 placeholder="Buscar productos frescos..."
-                placeholderTextColor={colors.textSoft}
-                style={styles.search}
+                placeholderTextColor={display.textSoft}
+                style={[styles.search, { color: display.text }]}
               />
             </View>
           </View>
@@ -93,7 +110,7 @@ export default function HomeScreen({ navigation }) {
           <View style={styles.sectionHeader}>
             <View>
               <Text style={styles.sectionTitle}>Categorías</Text>
-              <Text style={styles.sectionSubtitle}>
+              <Text style={[styles.sectionSubtitle, { color: display.textSoft }]}>
                 Explora por tipo de producto
               </Text>
             </View>
@@ -101,28 +118,28 @@ export default function HomeScreen({ navigation }) {
 
           <View style={styles.categories}>
             <Category
-              color="#DE7B54" // Naranja (Frutas)
+              color={display.categoryColors[0]}
               icon="nutrition"
               text="Frutas"
               subtitle="Dulces y frescas"
               onPress={() => navigation.navigate("CategoryFruits")}
             />
             <Category
-              color="#789A3D" // Verde (Verduras)
+              color={display.categoryColors[1]}
               icon="leaf"
               text="Verduras"
               subtitle="Del campo a casa"
               onPress={() => navigation.navigate("CategoryVegetables")}
             />
             <Category
-              color="#E8D499" // Mostaza (Especias)
+              color={display.categoryColors[2]}
               icon="flame"
               text="Especias"
               subtitle="Aroma y sabor"
               onPress={() => navigation.navigate("CategorySpices")}
             />
             <Category
-              color="#BCBCBC" // Gris (Ver Todo)
+              color={display.categoryColors[3]}
               icon="grid"
               text="Ver todo"
               subtitle="Todo el catálogo"
@@ -134,7 +151,7 @@ export default function HomeScreen({ navigation }) {
           <View style={styles.sectionHeader}>
             <View>
               <Text style={styles.sectionTitle}>Recomendados</Text>
-              <Text style={styles.sectionSubtitle}>Seleccionados para ti</Text>
+              <Text style={[styles.sectionSubtitle, { color: display.textSoft }]}>Seleccionados para ti</Text>
             </View>
 
             <TouchableOpacity>
@@ -149,15 +166,19 @@ export default function HomeScreen({ navigation }) {
           >
             <ProductCard
               navigation={navigation}
+              productId="naranjas-valencianas"
               name="Naranjas Valencianas"
               seller="Granjas Jaume"
               time="11 min"
               image={require("../../assets/images/comida/naranjas.webp")}
               badge="Fresco"
+              display={display}
             />
 
             <ProductCard
               navigation={navigation}
+              productId="aguacates-granada"
+              display={display}
               name="Aguacates de Granada"
               seller="Illo verdulerías"
               time="45 min"
@@ -167,11 +188,13 @@ export default function HomeScreen({ navigation }) {
 
             <ProductCard
               navigation={navigation}
+              productId="pimenton-vera"
               name="Pimentón de la Vera"
               seller="Antonio & Co"
               time="2 h"
               image={require("../../assets/images/comida/pimenton.jpg")}
               badge="Exclusivo"
+              display={display}
             />
           </ScrollView>
         </ScrollView>
@@ -198,34 +221,45 @@ const Category = ({ color, icon, text, subtitle, onPress }) => (
   </TouchableOpacity>
 );
 
-const ProductCard = ({ navigation, name, seller, time, image, badge }) => (
+const ProductCard = ({ navigation, productId, name, seller, time, image, badge, display }) => (
   <TouchableOpacity
-    style={styles.productCard}
+    style={[
+      styles.productCard,
+      display && { backgroundColor: display.surface, shadowColor: display.shadow },
+      display?.border === "#7CFF00" && { borderWidth: 1, borderColor: display.border },
+    ]}
     activeOpacity={0.85}
-    onPress={() => navigation.navigate("ProductDetail")}
+    onPress={() => navigation.navigate("ProductDetail", { productId })}
   >
     <Image source={image} style={styles.productCardImage} />
 
     <View style={styles.productCardContent}>
-      <Text style={styles.productCardBadge}>{badge}</Text>
+      <Text
+        style={[
+          styles.productCardBadge,
+          display && { backgroundColor: display.primarySoft, color: display.primary },
+        ]}
+      >
+        {badge}
+      </Text>
 
-      <Text style={styles.productCardName} numberOfLines={2}>
+      <Text style={[styles.productCardName, display && { color: display.text }]} numberOfLines={2}>
         {name}
       </Text>
 
-      <Text style={styles.productCardSeller} numberOfLines={1}>
+      <Text style={[styles.productCardSeller, display && { color: display.textSoft }]} numberOfLines={1}>
         {seller}
       </Text>
 
       <View style={styles.productCardFooter}>
-        <Text style={styles.productCardTime}>{time}</Text>
+        <Text style={[styles.productCardTime, display && { color: display.textSoft }]}>{time}</Text>
 
         <TouchableOpacity
-          style={styles.addButton}
+          style={[styles.addButton, display && { backgroundColor: display.primary }]}
           onPress={() => navigation.navigate("Cart")}
           activeOpacity={0.85}
         >
-          <Ionicons name="add" size={16} color="#fff" />
+          <Ionicons name="add" size={16} color={display?.border === "#7CFF00" ? "#000" : "#fff"} />
         </TouchableOpacity>
       </View>
     </View>
@@ -256,6 +290,11 @@ const styles = StyleSheet.create({
   },
   headerTextBlock: {
     flex: 1,
+  },
+  headerActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   headerMini: {
     fontSize: 12,

@@ -6,10 +6,13 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Image,
 } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import ScreenContainer from "../components/common/ScreenContainer";
-import FarmerTabBar from "../components/common/FarmerTabBar"; // <-- IMPORTAMOS LA BARRA CORRECTA
+import FarmerTabBar from "../components/common/FarmerTabBar";
+import { mockProducts } from "../data/mockProducts";
+import { ROLE_THEMES } from "../styles/roleThemes";
 
 export default function InventoryScreen({ navigation }) {
   // <-- RENOMBRADO PARA QUE COINCIDA CON EL STACK
@@ -21,6 +24,7 @@ export default function InventoryScreen({ navigation }) {
       stock: 48,
       unit: "kg",
       status: "Disponible",
+      image: mockProducts[0].image,
     },
     {
       id: "2",
@@ -29,6 +33,7 @@ export default function InventoryScreen({ navigation }) {
       stock: 12,
       unit: "kg",
       status: "Stock bajo",
+      image: require("../../assets/images/comida/calabacin.jpg"),
     },
     {
       id: "3",
@@ -37,6 +42,7 @@ export default function InventoryScreen({ navigation }) {
       stock: 86,
       unit: "kg",
       status: "Disponible",
+      image: require("../../assets/images/comida/naranjas.webp"),
     },
     {
       id: "4",
@@ -45,6 +51,7 @@ export default function InventoryScreen({ navigation }) {
       stock: 0,
       unit: "uds",
       status: "Agotado",
+      image: require("../../assets/images/comida/lechuga.webp"),
     },
     {
       id: "5",
@@ -53,6 +60,7 @@ export default function InventoryScreen({ navigation }) {
       stock: 19,
       unit: "kg",
       status: "Stock bajo",
+      image: require("../../assets/images/comida/pimiento.jpg"),
     },
   ];
 
@@ -68,18 +76,21 @@ export default function InventoryScreen({ navigation }) {
             <View style={styles.headerTopRow}>
               <TouchableOpacity
                 style={styles.iconButton}
-                onPress={() => navigation.goBack()}
+                onPress={() => navigation.navigate("HomeAgricultor")}
                 activeOpacity={0.85}
               >
                 <Ionicons name="arrow-back" size={20} color={theme.textDark} />
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.headerAction}
-                activeOpacity={0.85}
-              >
-                <Ionicons name="add" size={22} color={theme.textDark} />
-              </TouchableOpacity>
+              <View style={styles.headerActions}>
+                <TouchableOpacity
+                  style={styles.headerAction}
+                  activeOpacity={0.85}
+                  onPress={() => navigation.navigate("AddProduct")}
+                >
+                  <Ionicons name="add" size={22} color={theme.textDark} />
+                </TouchableOpacity>
+              </View>
             </View>
 
             <Text style={styles.headerTitle}>Inventario</Text>
@@ -162,13 +173,7 @@ export default function InventoryScreen({ navigation }) {
             {inventory.map((item) => (
               <View key={item.id} style={styles.productCard}>
                 <View style={styles.productTopRow}>
-                  <View style={styles.productIconWrap}>
-                    <MaterialCommunityIcons
-                      name="food-apple-outline"
-                      size={20}
-                      color={theme.secondary}
-                    />
-                  </View>
+                  <Image source={item.image} style={styles.productImage} />
 
                   <View style={styles.productMainInfo}>
                     <Text style={styles.productName}>{item.name}</Text>
@@ -222,7 +227,7 @@ export default function InventoryScreen({ navigation }) {
         </ScrollView>
 
         {/* BOTTOM BAR BLINDADA */}
-        <FarmerTabBar Navigation={navigation} ActiveRoute="ProfileAgricultor" />
+        <FarmerTabBar Navigation={navigation} ActiveRoute="HomeAgricultor" />
       </View>
     </ScreenContainer>
   );
@@ -255,12 +260,12 @@ const getStatusTextStyle = (status) => {
 };
 
 const theme = {
-  bg: "#F6F4EE",
+  bg: ROLE_THEMES.farmer.background,
   card: "#FFFFFF",
-  primary: "#6E8B3D",
-  primaryDark: "#4F672A",
-  secondary: "#D25E2C",
-  secondarySoft: "#FBE5DC",
+  primary: ROLE_THEMES.farmer.primary,
+  primaryDark: ROLE_THEMES.farmer.primaryDark,
+  secondary: ROLE_THEMES.farmer.primary,
+  secondarySoft: ROLE_THEMES.farmer.primarySoft,
   border: "#E6E1D5",
   textDark: "#3D3A34",
   textSoft: "#7B766D",
@@ -288,6 +293,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 18,
+  },
+  headerActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
 
   iconButton: {
@@ -436,13 +446,11 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 
-  productIconWrap: {
+  productImage: {
     width: 44,
     height: 44,
     borderRadius: 14,
-    backgroundColor: theme.secondarySoft,
-    justifyContent: "center",
-    alignItems: "center",
+    resizeMode: "cover",
     marginRight: 12,
   },
 

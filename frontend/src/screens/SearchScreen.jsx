@@ -26,7 +26,7 @@ export default function SearchScreen({ navigation }) {
     { label: 'Especias', icon: 'flame-outline', color: '#E9EFE0' },
   ];
 
-  const products = [
+  const products = useMemo(() => [
     {
       id: 1,
       name: 'Naranjas Valencianas',
@@ -75,7 +75,7 @@ export default function SearchScreen({ navigation }) {
       category: 'Frutas',
       image: require('../../assets/images/comida/fresas.jpg'),
     },
-  ];
+  ], []);
 
   const filteredProducts = useMemo(() => {
     return products.filter((item) => {
@@ -90,7 +90,7 @@ export default function SearchScreen({ navigation }) {
 
       return matchesCategory && matchesSearch;
     });
-  }, [searchText, activeCategory]);
+  }, [products, searchText, activeCategory]);
 
   return (
     <ScreenContainer>
@@ -110,12 +110,14 @@ export default function SearchScreen({ navigation }) {
               <Text style={styles.headerTitle}>Buscar</Text>
             </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-              <Image
-                source={require('../../assets/images/logo-harbest.png')}
-                style={styles.logoImage}
-              />
-            </TouchableOpacity>
+            <View style={styles.headerActions}>
+              <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <Image
+                  source={require('../../assets/images/logo-harbest.png')}
+                  style={styles.logoImage}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* BLOQUE PRINCIPAL DE BÚSQUEDA */}
@@ -261,7 +263,7 @@ export default function SearchScreen({ navigation }) {
             <Ionicons name="cart-outline" size={20} color="#8A8A8A" />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <TouchableOpacity onPress={() => navigation.navigate('ProfileUser')}>
             <Ionicons name="person-outline" size={20} color="#8A8A8A" />
           </TouchableOpacity>
         </View>
@@ -332,6 +334,11 @@ const styles = StyleSheet.create({
   headerTextBlock: {
     flex: 1,
     marginLeft: 12,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
 
   headerMini: {

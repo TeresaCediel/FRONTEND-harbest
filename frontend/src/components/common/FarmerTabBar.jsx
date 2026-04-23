@@ -1,8 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { ROLE_THEMES } from "../../styles/roleThemes";
 
 export default function FarmerTabBar({ Navigation, ActiveRoute }) {
-  const FarmerColor = "#d25e2c";
+  const FarmerColor = ROLE_THEMES.farmer.primary;
   const InactiveColor = "#8A8A8A";
 
   return (
@@ -101,5 +102,5 @@ const Styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
   },
   TabIcon: { padding: 10, borderRadius: 25 },
-  ActiveTabBg: { backgroundColor: "#E5E5E5" },
+  ActiveTabBg: { backgroundColor: ROLE_THEMES.farmer.primarySoft },
 });

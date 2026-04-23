@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useMemo, useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -10,164 +11,240 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 import FarmerTabBar from "../components/common/FarmerTabBar";
 import ScreenContainer from "../components/common/ScreenContainer";
+import { ROLE_THEMES } from "../styles/roleThemes";
+
+const categoryOptions = [
+  { id: "Frutas", label: "Frutas", icon: "nutrition-outline" },
+  { id: "Verduras", label: "Verduras", icon: "leaf-outline" },
+  { id: "Especias", label: "Especias", icon: "flame-outline" },
+];
+
+const previewImages = {
+  Frutas: require("../../assets/images/comida/naranjas.webp"),
+  Verduras: require("../../assets/images/comida/tomates.jpeg"),
+  Especias: require("../../assets/images/comida/pimenton.jpg"),
+};
 
 export default function AddProductScreen({ navigation }) {
-  const FarmerColor = "#d25e2c";
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("Verduras");
+  const [description, setDescription] = useState("");
+  const [stock, setStock] = useState("");
+  const [price, setPrice] = useState("");
+  const [unit, setUnit] = useState("kg");
+
+  const previewName = name.trim() || "Tomates de la huerta";
+  const previewStock = stock.trim() || "0";
+  const previewPrice = price.trim() || "0.00";
+
+  const canSave = useMemo(() => {
+    return name.trim() && stock.trim() && price.trim();
+  }, [name, stock, price]);
+
+  const handleSave = () => {
+    navigation.navigate("Inventory");
+  };
 
   return (
     <ScreenContainer>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
+        style={styles.keyboardView}
       >
-        <View style={Styles.MainContainer}>
+        <View style={styles.container}>
           <ScrollView
-            contentContainerStyle={Styles.ScrollPadding}
+            contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {/* CABECERA */}
-            <View style={Styles.HeaderRow}>
+            <View style={styles.header}>
               <TouchableOpacity
-                style={Styles.HeaderLeft}
-                onPress={() => navigation.goBack()}
+                style={styles.headerLeft}
+                onPress={() => navigation.navigate("HomeAgricultor")}
+                activeOpacity={0.85}
               >
-                <Ionicons name="arrow-back" size={22} color="#8A8A8A" />
-                <Text style={Styles.HeaderText}>Añadir nuevo producto</Text>
+                <Ionicons name="arrow-back" size={22} color={theme.text} />
+                <Text style={styles.headerText}>Anadir nuevo producto</Text>
               </TouchableOpacity>
 
-              <View style={Styles.HeaderRight}>
-                <TouchableOpacity style={{ marginRight: 8 }}>
-                  <Ionicons
-                    name="ellipsis-vertical"
-                    size={20}
-                    color="#8A8A8A"
-                  />
-                </TouchableOpacity>
+              <View style={styles.headerRight}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("Profile")}
+                  style={styles.logoButton}
+                  onPress={() => navigation.navigate("ProfileAgricultor")}
+                  activeOpacity={0.85}
                 >
-                  <View
-                    style={[
-                      Styles.LogoCircle,
-                      { backgroundColor: FarmerColor },
-                    ]}
-                  >
-                    <Image
-                      source={require("../../assets/images/logo-harbest.png")}
-                      style={Styles.TopLogo}
-                      tintColor="#FFF"
-                    />
-                  </View>
+                  <Image source={theme.logo} style={styles.logoImage} />
                 </TouchableOpacity>
               </View>
             </View>
 
-            {/* FOTO Y GUARDAR */}
-            <View style={Styles.TopActionsRow}>
-              <View style={Styles.UploadBox}>
-                <Ionicons
-                  name="camera-outline"
-                  size={36}
-                  color={FarmerColor}
-                  style={{ marginBottom: 10 }}
-                />
-                <TouchableOpacity
-                  style={[
-                    Styles.UploadButton,
-                    { backgroundColor: FarmerColor },
-                  ]}
-                >
-                  <Ionicons name="add" size={16} color="#FFF" />
-                  <Text style={Styles.UploadButtonText}>Subir foto</Text>
+            <View style={styles.previewCard}>
+              <Image source={previewImages[category]} style={styles.previewImage} />
+
+              <View style={styles.previewOverlay}>
+                <View style={styles.previewBadge}>
+                  <Ionicons name="camera-outline" size={14} color={theme.primary} />
+                  <Text style={styles.previewBadgeText}>Preview</Text>
+                </View>
+
+                <TouchableOpacity style={styles.photoButton} activeOpacity={0.85}>
+                  <Ionicons name="image-outline" size={16} color="#fff" />
+                  <Text style={styles.photoButtonText}>Cambiar foto</Text>
                 </TouchableOpacity>
-                <Text style={Styles.UploadSubtext}>
-                  Añade una imagen del{"\n"}producto
+              </View>
+            </View>
+
+            <View style={styles.previewInfoCard}>
+              <View style={styles.previewInfoMain}>
+                <Text style={styles.previewProductName} numberOfLines={1}>
+                  {previewName}
+                </Text>
+                <Text style={styles.previewProductMeta}>
+                  {category} · {previewStock} {unit} disponibles
                 </Text>
               </View>
 
-              <TouchableOpacity
-                style={[Styles.SaveButton, { backgroundColor: FarmerColor }]}
-              >
-                <Text style={Styles.SaveButtonText}>GUARDAR</Text>
-              </TouchableOpacity>
+              <View style={styles.priceBadge}>
+                <Text style={styles.priceBadgeValue}>{previewPrice} €</Text>
+                <Text style={styles.priceBadgeUnit}>/{unit}</Text>
+              </View>
             </View>
 
-            {/* FORMULARIO */}
-            <View style={Styles.FormArea}>
-              <View style={Styles.InputGroup}>
-                <Text style={Styles.InputLabel}>Nombre</Text>
-                <View style={Styles.InputContainer}>
-                  <TextInput
-                    style={Styles.Input}
-                    placeholder="Ej. Patatas"
-                    placeholderTextColor="#B8B8B8"
-                  />
-                </View>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Datos del producto</Text>
+              <Text style={styles.sectionSubtitle}>
+                Completa la informacion que vera el cliente.
+              </Text>
+            </View>
+
+            <View style={styles.formCard}>
+              <InputField
+                label="Nombre"
+                value={name}
+                onChangeText={setName}
+                placeholder="Ej. Tomates de la huerta"
+                icon="pricetag-outline"
+              />
+
+              <Text style={styles.label}>Categoria</Text>
+              <View style={styles.categoryRow}>
+                {categoryOptions.map((item) => {
+                  const isActive = category === item.id;
+
+                  return (
+                    <TouchableOpacity
+                      key={item.id}
+                      style={[styles.categoryChip, isActive && styles.categoryChipActive]}
+                      onPress={() => setCategory(item.id)}
+                      activeOpacity={0.85}
+                    >
+                      <Ionicons
+                        name={item.icon}
+                        size={16}
+                        color={isActive ? "#fff" : theme.primary}
+                      />
+                      <Text
+                        style={[
+                          styles.categoryChipText,
+                          isActive && styles.categoryChipTextActive,
+                        ]}
+                      >
+                        {item.label}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
 
-              <View style={Styles.InputGroup}>
-                <Text style={Styles.InputLabel}>Categoría</Text>
-                <View style={Styles.InputContainer}>
-                  <Ionicons
-                    name="bookmark-outline"
-                    size={18}
-                    color={FarmerColor}
-                    style={{ marginRight: 8 }}
-                  />
-                  <TextInput
-                    style={Styles.Input}
-                    placeholder="Seleccionar"
-                    placeholderTextColor="#B8B8B8"
-                  />
-                  <Ionicons name="chevron-forward" size={18} color="#C4C4C4" />
-                </View>
+              <InputField
+                label="Descripcion"
+                value={description}
+                onChangeText={setDescription}
+                placeholder="Ej. Recolectados esta semana, dulces y firmes"
+                icon="document-text-outline"
+                multiline
+              />
+
+              <View style={styles.doubleRow}>
+                <InputField
+                  label="Stock"
+                  value={stock}
+                  onChangeText={setStock}
+                  placeholder="0"
+                  keyboardType="numeric"
+                  icon="cube-outline"
+                  suffix={unit}
+                  containerStyle={styles.doubleInput}
+                />
+
+                <InputField
+                  label="Precio"
+                  value={price}
+                  onChangeText={setPrice}
+                  placeholder="0.00"
+                  keyboardType="decimal-pad"
+                  icon="cash-outline"
+                  suffix={`€/${unit}`}
+                  containerStyle={styles.doubleInput}
+                />
               </View>
 
-              <View style={Styles.InputGroup}>
-                <Text style={Styles.InputLabel}>Descripción</Text>
-                <View style={Styles.InputContainer}>
-                  <TextInput
-                    style={Styles.Input}
-                    placeholder="Opcional"
-                    placeholderTextColor="#B8B8B8"
-                  />
-                </View>
+              <Text style={styles.label}>Unidad</Text>
+              <View style={styles.unitRow}>
+                {["kg", "ud", "caja"].map((item) => {
+                  const isActive = unit === item;
+
+                  return (
+                    <TouchableOpacity
+                      key={item}
+                      style={[styles.unitChip, isActive && styles.unitChipActive]}
+                      onPress={() => setUnit(item)}
+                      activeOpacity={0.85}
+                    >
+                      <Text style={[styles.unitChipText, isActive && styles.unitChipTextActive]}>
+                        {item}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+
+            <View style={styles.summaryCard}>
+              <View style={styles.summaryIcon}>
+                <Ionicons name="storefront-outline" size={20} color={theme.primary} />
               </View>
 
-              <View style={Styles.InputGroup}>
-                <Text style={Styles.InputLabel}>Cantidad Disponible</Text>
-                <View style={[Styles.InputContainer, { paddingRight: 0 }]}>
-                  <TextInput
-                    style={Styles.Input}
-                    placeholder="0"
-                    placeholderTextColor="#B8B8B8"
-                    keyboardType="numeric"
-                  />
-                  <View style={Styles.UnitBox}>
-                    <Text style={Styles.UnitText}>kg</Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={Styles.InputGroup}>
-                <Text style={Styles.InputLabel}>Precio por kg</Text>
-                <View style={[Styles.InputContainer, { paddingRight: 0 }]}>
-                  <Text style={Styles.CurrencyText}>€</Text>
-                  <TextInput
-                    style={Styles.Input}
-                    placeholder="0.00"
-                    placeholderTextColor="#B8B8B8"
-                    keyboardType="numeric"
-                  />
-                  <View style={Styles.UnitBox}>
-                    <Text style={Styles.UnitText}>€/kg</Text>
-                  </View>
-                </View>
+              <View style={styles.summaryTextBlock}>
+                <Text style={styles.summaryTitle}>Listo para publicar</Text>
+                <Text style={styles.summaryText}>
+                  El producto aparecera en tu inventario y podras editarlo cuando lo necesites.
+                </Text>
               </View>
             </View>
           </ScrollView>
+
+          <View style={styles.bottomBar}>
+            <TouchableOpacity
+              style={styles.secondaryButton}
+              onPress={() => navigation.navigate("Inventory")}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.secondaryButtonText}>Cancelar</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.saveButton, !canSave && styles.saveButtonDisabled]}
+              onPress={handleSave}
+              activeOpacity={0.85}
+              disabled={!canSave}
+            >
+              <Ionicons name="checkmark" size={18} color="#fff" />
+              <Text style={styles.saveButtonText}>Guardar</Text>
+            </TouchableOpacity>
+          </View>
 
           <FarmerTabBar Navigation={navigation} ActiveRoute="AddProduct" />
         </View>
@@ -176,101 +253,403 @@ export default function AddProductScreen({ navigation }) {
   );
 }
 
-const Styles = StyleSheet.create({
-  MainContainer: { flex: 1, backgroundColor: "#F8F8F8" },
-  ScrollPadding: { paddingHorizontal: 25, paddingTop: 10, paddingBottom: 110 },
+const InputField = ({
+  label,
+  value,
+  onChangeText,
+  placeholder,
+  icon,
+  suffix,
+  multiline,
+  containerStyle,
+  ...props
+}) => (
+  <View style={[styles.inputGroup, containerStyle]}>
+    <Text style={styles.label}>{label}</Text>
+    <View style={[styles.inputBox, multiline && styles.textAreaBox]}>
+      <Ionicons
+        name={icon}
+        size={18}
+        color={theme.primary}
+        style={styles.inputIcon}
+      />
+      <TextInput
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        placeholderTextColor="#B8B8B8"
+        style={[styles.input, multiline && styles.textArea]}
+        multiline={multiline}
+        {...props}
+      />
+      {suffix && (
+        <View style={styles.suffixBox}>
+          <Text style={styles.suffixText}>{suffix}</Text>
+        </View>
+      )}
+    </View>
+  </View>
+);
 
-  HeaderRow: {
+const theme = ROLE_THEMES.farmer;
+
+const styles = StyleSheet.create({
+  keyboardView: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: theme.background,
+  },
+  scrollContent: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    paddingBottom: 190,
+  },
+  header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 30,
+    marginBottom: 18,
   },
-  HeaderLeft: { flexDirection: "row", alignItems: "center" },
-  HeaderText: {
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    paddingRight: 12,
+  },
+  headerRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  headerText: {
     fontSize: 18,
-    color: "#8A8A8A",
+    color: theme.text,
     marginLeft: 10,
-    fontWeight: "500",
+    fontWeight: "800",
   },
-  HeaderRight: { flexDirection: "row", alignItems: "center" },
-  LogoCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  logoButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 16,
+    backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#F1D3C5",
   },
-  TopLogo: { width: 20, height: 20, resizeMode: "contain" },
-
-  TopActionsRow: {
+  logoImage: {
+    width: 34,
+    height: 34,
+    resizeMode: "contain",
+  },
+  previewCard: {
+    height: 210,
+    borderRadius: 28,
+    overflow: "hidden",
+    backgroundColor: "#fff",
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#F1D3C5",
+  },
+  previewImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  previewOverlay: {
+    position: "absolute",
+    left: 14,
+    right: 14,
+    bottom: 14,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 30,
   },
-  UploadBox: {
-    width: 150,
-    backgroundColor: "#F9FAE8",
-    borderRadius: 20,
-    padding: 15,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#EFEFEF",
-  },
-  UploadButton: {
+  previewBadge: {
+    backgroundColor: "rgba(255,255,255,0.95)",
+    borderRadius: 999,
+    paddingHorizontal: 11,
+    paddingVertical: 8,
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    marginBottom: 8,
   },
-  UploadButtonText: {
-    color: "#FFF",
+  previewBadgeText: {
+    marginLeft: 6,
+    color: theme.primary,
     fontSize: 12,
-    fontWeight: "600",
-    marginLeft: 4,
+    fontWeight: "800",
   },
-  UploadSubtext: {
-    fontSize: 9,
-    color: "#A8A8A8",
-    textAlign: "center",
-    lineHeight: 12,
-  },
-
-  SaveButton: { paddingVertical: 12, paddingHorizontal: 20, borderRadius: 12 },
-  SaveButtonText: { color: "#FFF", fontWeight: "700", fontSize: 14 },
-
-  FormArea: { gap: 15 },
-  InputGroup: { marginBottom: 5 },
-  InputLabel: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#7A7A7A",
-    marginBottom: 8,
-  },
-  InputContainer: {
+  photoButton: {
+    backgroundColor: theme.primary,
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 9,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF",
-    borderRadius: 10,
+  },
+  photoButtonText: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "800",
+    marginLeft: 6,
+  },
+  previewInfoCard: {
+    backgroundColor: "#fff",
+    borderRadius: 22,
+    padding: 16,
+    marginBottom: 22,
+    flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
-    borderColor: "#F0F0F0",
-    paddingHorizontal: 15,
+    borderColor: "#F1D3C5",
+  },
+  previewInfoMain: {
+    flex: 1,
+    paddingRight: 12,
+  },
+  previewProductName: {
+    color: theme.text,
+    fontSize: 18,
+    fontWeight: "800",
+    marginBottom: 5,
+  },
+  previewProductMeta: {
+    color: theme.textSoft,
+    fontSize: 13,
+    fontWeight: "600",
+  },
+  priceBadge: {
+    backgroundColor: theme.primarySoft,
+    borderRadius: 18,
+    paddingHorizontal: 13,
+    paddingVertical: 10,
+    alignItems: "center",
+  },
+  priceBadgeValue: {
+    color: theme.primary,
+    fontSize: 16,
+    fontWeight: "800",
+  },
+  priceBadgeUnit: {
+    color: theme.textSoft,
+    fontSize: 11,
+    marginTop: 2,
+  },
+  sectionHeader: {
+    marginBottom: 12,
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: theme.text,
+  },
+  sectionSubtitle: {
+    fontSize: 13,
+    color: theme.textSoft,
+    marginTop: 2,
+  },
+  formCard: {
+    backgroundColor: "#fff",
+    borderRadius: 24,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#F1D3C5",
+    marginBottom: 14,
+  },
+  inputGroup: {
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: "800",
+    color: theme.text,
+    marginBottom: 8,
+  },
+  inputBox: {
+    minHeight: 50,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FBF8F6",
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#F2DFD6",
+    paddingHorizontal: 13,
+  },
+  textAreaBox: {
+    minHeight: 92,
+    alignItems: "flex-start",
+    paddingTop: 13,
+  },
+  inputIcon: {
+    marginRight: 9,
+    marginTop: 1,
+  },
+  input: {
+    flex: 1,
+    fontSize: 14,
+    color: theme.text,
     paddingVertical: Platform.OS === "ios" ? 14 : 10,
   },
-  Input: { flex: 1, fontSize: 14, color: "#7A7A7A" },
-
-  CurrencyText: { fontSize: 14, color: "#7A7A7A", marginRight: 8 },
-  UnitBox: {
-    backgroundColor: "#F5F5F5",
-    paddingVertical: Platform.OS === "ios" ? 14 : 10,
-    paddingHorizontal: 15,
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
-    borderLeftWidth: 1,
-    borderLeftColor: "#F0F0F0",
+  textArea: {
+    minHeight: 66,
+    textAlignVertical: "top",
   },
-  UnitText: { fontSize: 13, color: "#8A8A8A", fontWeight: "500" },
+  suffixBox: {
+    backgroundColor: theme.primarySoft,
+    borderRadius: 12,
+    paddingHorizontal: 9,
+    paddingVertical: 7,
+    marginLeft: 8,
+  },
+  suffixText: {
+    color: theme.primary,
+    fontSize: 12,
+    fontWeight: "800",
+  },
+  categoryRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 15,
+  },
+  categoryChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FBF8F6",
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#F2DFD6",
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+  },
+  categoryChipActive: {
+    backgroundColor: theme.primary,
+    borderColor: theme.primary,
+  },
+  categoryChipText: {
+    marginLeft: 6,
+    color: theme.primary,
+    fontSize: 13,
+    fontWeight: "800",
+  },
+  categoryChipTextActive: {
+    color: "#fff",
+  },
+  doubleRow: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  doubleInput: {
+    flex: 1,
+  },
+  unitRow: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  unitChip: {
+    minWidth: 64,
+    alignItems: "center",
+    backgroundColor: "#FBF8F6",
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#F2DFD6",
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+  },
+  unitChipActive: {
+    backgroundColor: theme.primarySoft,
+    borderColor: "#F0B59D",
+  },
+  unitChipText: {
+    color: theme.textSoft,
+    fontSize: 13,
+    fontWeight: "800",
+  },
+  unitChipTextActive: {
+    color: theme.primary,
+  },
+  summaryCard: {
+    backgroundColor: "#fff",
+    borderRadius: 22,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#F1D3C5",
+  },
+  summaryIcon: {
+    width: 42,
+    height: 42,
+    borderRadius: 15,
+    backgroundColor: theme.primarySoft,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 12,
+  },
+  summaryTextBlock: {
+    flex: 1,
+  },
+  summaryTitle: {
+    fontSize: 15,
+    color: theme.text,
+    fontWeight: "800",
+    marginBottom: 3,
+  },
+  summaryText: {
+    fontSize: 12,
+    lineHeight: 18,
+    color: theme.textSoft,
+  },
+  bottomBar: {
+    position: "absolute",
+    left: 20,
+    right: 20,
+    bottom: 102,
+    backgroundColor: "#fff",
+    borderRadius: 24,
+    padding: 12,
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "#F1D3C5",
+    shadowColor: "#8B3E24",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
+    elevation: 4,
+  },
+  secondaryButton: {
+    flex: 1,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#F2DFD6",
+    paddingVertical: 14,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 10,
+  },
+  secondaryButtonText: {
+    color: theme.text,
+    fontSize: 14,
+    fontWeight: "800",
+  },
+  saveButton: {
+    flex: 1,
+    backgroundColor: theme.primary,
+    borderRadius: 16,
+    paddingVertical: 14,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  saveButtonDisabled: {
+    opacity: 0.5,
+  },
+  saveButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "800",
+    marginLeft: 7,
+  },
 });

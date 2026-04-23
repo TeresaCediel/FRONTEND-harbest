@@ -1,10 +1,10 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { ROLE_THEMES } from "../../styles/roleThemes";
 
 export default function ClientTabBar({ Navigation, ActiveRoute }) {
-  // Color verde corporativo basado en los mockups del cliente
-  const ClientColor = "#6E8B3D";
+  const ClientColor = ROLE_THEMES.user.primaryTint;
   const InactiveColor = "#8A8A8A";
 
   return (
@@ -91,5 +91,5 @@ const Styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
   },
   TabIcon: { padding: 10, borderRadius: 25 },
-  ActiveTabBg: { backgroundColor: "#E5E5E5" },
+  ActiveTabBg: { backgroundColor: ROLE_THEMES.user.primarySoft },
 });

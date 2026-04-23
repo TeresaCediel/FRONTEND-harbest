@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import ScreenContainer from '../components/common/ScreenContainer';
+import { ROLE_THEMES } from '../styles/roleThemes';
 
 export default function OrdersScreenAgricultor({ navigation }) {
   const orders = [
@@ -57,7 +58,7 @@ export default function OrdersScreenAgricultor({ navigation }) {
             <View style={styles.headerTopRow}>
               <TouchableOpacity
                 style={styles.iconButton}
-                onPress={() => navigation.goBack()}
+                onPress={() => navigation.navigate("HomeAgricultor")}
                 activeOpacity={0.85}
               >
                 <Ionicons name="arrow-back" size={20} color={theme.textDark} />
@@ -203,7 +204,7 @@ export default function OrdersScreenAgricultor({ navigation }) {
             <Ionicons name="receipt-outline" size={18} color="#fff" />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <TouchableOpacity onPress={() => navigation.navigate('ProfileAgricultor')}>
             <Ionicons name="person-outline" size={20} color="#7B7B7B" />
           </TouchableOpacity>
         </View>
@@ -243,17 +244,17 @@ const getStatusTextStyle = (status) => {
 };
 
 const theme = {
-  bg: '#F6F4EE',
+  bg: ROLE_THEMES.farmer.background,
   card: '#FFFFFF',
-  primary: '#6E8B3D',
-  primaryDark: '#4F672A',
-  primarySoft: '#EEF3E4',
+  primary: ROLE_THEMES.farmer.primary,
+  primaryDark: ROLE_THEMES.farmer.primaryDark,
+  primarySoft: ROLE_THEMES.farmer.primarySoft,
   border: '#E5DED0',
   textDark: '#3D3A34',
   textSoft: '#7C766D',
   highlight: '#F4F0E4',
-  secondary: '#d25e2c',
-  secondarySoft: '#d69275',
+  secondary: ROLE_THEMES.farmer.primary,
+  secondarySoft: '#F0A181',
 };
 
 const styles = StyleSheet.create({

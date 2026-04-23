@@ -32,7 +32,7 @@ export default function StackNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home" // Lo mantenemos para tus pruebas
+        initialRouteName="Splash"
         screenOptions={{ headerShown: false }}
       >
         {/* COMUNES */}

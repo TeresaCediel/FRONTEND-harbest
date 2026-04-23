@@ -10,9 +10,10 @@ import {
 } from "react-native";
 import FarmerTabBar from "../components/common/FarmerTabBar";
 import ScreenContainer from "../components/common/ScreenContainer";
+import { ROLE_THEMES } from "../styles/roleThemes";
 
 export default function OrdersAgricultorScreen({ navigation }) {
-  const FarmerColor = "#d25e2c";
+  const FarmerColor = ROLE_THEMES.farmer.primary;
 
   const orders = [
     {
@@ -45,16 +46,13 @@ export default function OrdersAgricultorScreen({ navigation }) {
           <View style={Styles.HeaderRow}>
             <TouchableOpacity
               style={Styles.HeaderLeft}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate("HomeAgricultor")}
             >
               <Ionicons name="arrow-back" size={24} color="#8A8A8A" />
               <Text style={Styles.HeaderText}>Pedidos</Text>
             </TouchableOpacity>
 
             <View style={Styles.HeaderRight}>
-              <TouchableOpacity style={{ marginRight: 8 }}>
-                <Ionicons name="ellipsis-vertical" size={20} color="#8A8A8A" />
-              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate("ProfileAgricultor")}
               >
@@ -62,9 +60,8 @@ export default function OrdersAgricultorScreen({ navigation }) {
                   style={[Styles.LogoCircle, { backgroundColor: FarmerColor }]}
                 >
                   <Image
-                    source={require("../../assets/images/logo-harbest.png")}
+                    source={ROLE_THEMES.farmer.logo}
                     style={Styles.TopLogo}
-                    tintColor="#FFF"
                   />
                 </View>
               </TouchableOpacity>
@@ -170,7 +167,7 @@ const OrderCard = ({ order }) => {
 };
 
 const Styles = StyleSheet.create({
-  MainContainer: { flex: 1, backgroundColor: "#F8F8F8" },
+  MainContainer: { flex: 1, backgroundColor: ROLE_THEMES.farmer.background },
   ScrollPadding: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 110 },
   HeaderRow: {
     flexDirection: "row",

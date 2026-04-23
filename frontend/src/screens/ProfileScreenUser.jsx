@@ -10,7 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../styles/colors";
 import ScreenContainer from "../components/common/ScreenContainer";
-import ClientTabBar from "../components/common/ClientTabBar"; // <-- IMPORTAMOS LA BARRA
+import ClientTabBar from "../components/common/ClientTabBar";
 
 export default function ProfileScreenUser({ navigation }) {
   return (
@@ -27,13 +27,14 @@ export default function ProfileScreenUser({ navigation }) {
                 <Ionicons name="arrow-back" size={22} color="#fff" />
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-                <Image
-                  source={require("../../assets/images/logo-harbest.png")}
-                  style={styles.headerLogo}
-                  tintColor="#fff"
-                />
-              </TouchableOpacity>
+              <View style={styles.headerActions}>
+                <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                  <Image
+                    source={require("../../assets/images/logo-harbest.png")}
+                    style={styles.headerLogo}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
 
             <View style={styles.headerTextBlock}>
@@ -151,6 +152,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 26,
+  },
+  headerActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   headerLogo: {
     width: 40,

@@ -4,11 +4,11 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   Image,
   ImageBackground,
   StatusBar,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import colors from '../styles/colors';
 
 export default function SplashScreen({ navigation }) {
@@ -25,12 +25,12 @@ export default function SplashScreen({ navigation }) {
         <View style={styles.overlay}>
           {/* Logo */}
           <View style={styles.logoWrapper}>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <View>
               <Image
                 source={require('../../assets/images/logo-harbest.png')}
                 style={styles.logoImage}
               />
-            </TouchableOpacity>
+            </View>
           </View>
 
           {/* Contenido superior */}
@@ -60,7 +60,7 @@ export default function SplashScreen({ navigation }) {
           <View style={styles.bottomArea}>
             <TouchableOpacity
               style={[styles.roleButton, styles.adminButton]}
-              onPress={() => navigation.navigate('Login', { role: 'admin' })}
+              onPress={() => navigation.navigate('Login', { role: 'farmer' })}
               activeOpacity={0.85}
             >
               <Text style={styles.roleButtonText}>Soy Agricultor</Text>

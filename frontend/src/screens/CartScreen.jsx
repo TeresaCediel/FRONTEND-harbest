@@ -1,55 +1,30 @@
 import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
   Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-import colors from "../styles/colors";
+import ClientTabBar from "../components/common/ClientTabBar";
 import ScreenContainer from "../components/common/ScreenContainer";
-import ClientTabBar from "../components/common/ClientTabBar"; // <-- IMPORTAMOS LA BARRA BLINDADA
+import { useCart } from "../context/CartContext";
+import colors from "../styles/colors";
+import { formatPrice, formatUnitPrice } from "../utils/formatPrice";
 
 export default function CartScreen({ navigation }) {
-  const cartItems = [
-    {
-      id: 1,
-      name: "Naranjas Valencianas",
-      seller: "Granjas Jaume",
-      price: 4.9,
-      quantity: 2,
-      unit: "/kg",
-      image: require("../../assets/images/comida/naranjas.webp"),
-    },
-    {
-      id: 2,
-      name: "Aguacates de Granada",
-      seller: "Illo verdulerías",
-      price: 6.2,
-      quantity: 1,
-      unit: "/kg",
-      image: require("../../assets/images/comida/aguacate.webp"),
-    },
-    {
-      id: 3,
-      name: "Pimentón de la Vera",
-      seller: "Antonio & Co",
-      price: 3.8,
-      quantity: 1,
-      unit: "",
-      image: require("../../assets/images/comida/pimenton.jpg"),
-    },
-  ];
-
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0,
-  );
-  const shipping = 2.5;
-  const total = subtotal + shipping;
+  const {
+    items,
+    subtotal,
+    shipping,
+    total,
+    clearCart,
+    removeFromCart,
+    updateQuantity,
+  } = useCart();
 
   return (
     <ScreenContainer>
@@ -58,7 +33,6 @@ export default function CartScreen({ navigation }) {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
         >
-          {/* HEADER SIMPLE */}
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Ionicons name="arrow-back" size={22} color={colors.text} />
@@ -69,25 +43,23 @@ export default function CartScreen({ navigation }) {
               <Text style={styles.headerTitle}>Carrito</Text>
             </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-              <Image
-                source={require("../../assets/images/logo-harbest.png")}
-                style={styles.logoImage}
-                tintColor="#6E8B3D"
-              />
-            </TouchableOpacity>
+            <View style={styles.headerActions}>
+              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                <Image
+                  source={require("../../assets/images/logo-harbest.png")}
+                  style={styles.logoImage}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
-          {/* CAJA PRINCIPAL */}
           <View style={styles.heroCard}>
             <View style={styles.heroLeft}>
               <View style={styles.heroBadge}>
                 <Text style={styles.heroBadgeText}>Harbest Market</Text>
               </View>
 
-              <Text style={styles.heroTitle}>
-                Todo listo{"\n"}para tu compra
-              </Text>
+              <Text style={styles.heroTitle}>Todo listo{"\n"}para tu compra</Text>
 
               <Text style={styles.heroSubtitle}>
                 Revisa tus productos frescos antes de confirmar el pedido.
@@ -99,82 +71,95 @@ export default function CartScreen({ navigation }) {
             </View>
           </View>
 
-          {/* RESUMEN */}
           <View style={styles.summaryRow}>
             <View style={styles.summaryBox}>
               <Text style={styles.summaryLabel}>Productos</Text>
-              <Text style={styles.summaryValue}>{cartItems.length}</Text>
+              <Text style={styles.summaryValue}>{items.length}</Text>
             </View>
 
             <View style={styles.summaryBox}>
               <Text style={styles.summaryLabel}>Total actual</Text>
-              <Text style={styles.summaryValue}>
-                {total.toFixed(2).replace(".", ",")} €
-              </Text>
+              <Text style={styles.summaryValue}>{formatPrice(total)}</Text>
             </View>
           </View>
 
-          {/* CABECERA SECCIÓN */}
           <View style={styles.sectionHeader}>
             <View>
-              <Text style={styles.sectionTitle}>Tu selección</Text>
+              <Text style={styles.sectionTitle}>Tu seleccion</Text>
               <Text style={styles.sectionSubtitle}>
-                Productos añadidos al carrito
+                Productos anadidos al carrito
               </Text>
             </View>
 
-            <TouchableOpacity>
-              <Text style={styles.seeAllText}>Vaciar</Text>
-            </TouchableOpacity>
+            {items.length > 0 && (
+              <TouchableOpacity onPress={clearCart}>
+                <Text style={styles.seeAllText}>Vaciar</Text>
+              </TouchableOpacity>
+            )}
           </View>
 
-          {/* PRODUCTOS */}
-          {cartItems.map((item) => (
-            <CartItemCard key={item.id} item={item} />
-          ))}
+          {items.length > 0 ? (
+            items.map((item) => (
+              <CartItemCard
+                key={item.id}
+                item={item}
+                onRemove={() => removeFromCart(item.id)}
+                onDecrease={() => updateQuantity(item.id, item.quantity - 0.5)}
+                onIncrease={() => updateQuantity(item.id, item.quantity + 0.5)}
+              />
+            ))
+          ) : (
+            <View style={styles.emptyState}>
+              <Ionicons name="basket-outline" size={32} color={colors.primary} />
+              <Text style={styles.emptyTitle}>Tu carrito esta vacio</Text>
+              <Text style={styles.emptySubtitle}>
+                Explora el catalogo y anade productos frescos para verlos aqui.
+              </Text>
+              <TouchableOpacity
+                style={styles.browseButton}
+                onPress={() => navigation.navigate("Home")}
+                activeOpacity={0.85}
+              >
+                <Text style={styles.browseButtonText}>Ver productos</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
-          {/* RESUMEN FINAL */}
           <View style={styles.totalCard}>
             <Text style={styles.totalCardTitle}>Resumen del pedido</Text>
 
             <View style={styles.totalRow}>
               <Text style={styles.totalLabel}>Subtotal</Text>
-              <Text style={styles.totalValue}>
-                {subtotal.toFixed(2).replace(".", ",")} €
-              </Text>
+              <Text style={styles.totalValue}>{formatPrice(subtotal)}</Text>
             </View>
 
             <View style={styles.totalRow}>
-              <Text style={styles.totalLabel}>Envío</Text>
-              <Text style={styles.totalValue}>
-                {shipping.toFixed(2).replace(".", ",")} €
-              </Text>
+              <Text style={styles.totalLabel}>Envio</Text>
+              <Text style={styles.totalValue}>{formatPrice(shipping)}</Text>
             </View>
 
             <View style={[styles.totalRow, styles.totalRowFinal]}>
               <Text style={styles.totalFinalLabel}>Total</Text>
-              <Text style={styles.totalFinalValue}>
-                {total.toFixed(2).replace(".", ",")} €
-              </Text>
+              <Text style={styles.totalFinalValue}>{formatPrice(total)}</Text>
             </View>
 
             <TouchableOpacity
-              style={styles.checkoutButton}
+              style={[styles.checkoutButton, items.length === 0 && styles.disabledButton]}
               activeOpacity={0.85}
+              disabled={items.length === 0}
             >
               <Text style={styles.checkoutButtonText}>Finalizar compra</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
 
-        {/* BOTTOM BAR BLINDADA DEL CLIENTE */}
         <ClientTabBar Navigation={navigation} ActiveRoute="Cart" />
       </View>
     </ScreenContainer>
   );
 }
 
-const CartItemCard = ({ item }) => (
+const CartItemCard = ({ item, onRemove, onDecrease, onIncrease }) => (
   <View style={styles.itemCard}>
     <Image source={item.image} style={styles.itemImage} />
 
@@ -184,7 +169,7 @@ const CartItemCard = ({ item }) => (
           {item.name}
         </Text>
 
-        <TouchableOpacity style={styles.removeButton} activeOpacity={0.85}>
+        <TouchableOpacity style={styles.removeButton} onPress={onRemove} activeOpacity={0.85}>
           <Ionicons name="trash-outline" size={16} color={colors.primary} />
         </TouchableOpacity>
       </View>
@@ -193,17 +178,17 @@ const CartItemCard = ({ item }) => (
 
       <View style={styles.itemFooter}>
         <Text style={styles.itemPrice}>
-          {item.price.toFixed(2).replace(".", ",")} €{item.unit}
+          {formatUnitPrice(item.price, item.unit)}
         </Text>
 
         <View style={styles.quantityBox}>
-          <TouchableOpacity style={styles.quantityButton} activeOpacity={0.85}>
+          <TouchableOpacity style={styles.quantityButton} onPress={onDecrease} activeOpacity={0.85}>
             <Ionicons name="remove" size={14} color={colors.text} />
           </TouchableOpacity>
 
-          <Text style={styles.quantityText}>{item.quantity}</Text>
+          <Text style={styles.quantityText}>{item.quantity.toFixed(1)}</Text>
 
-          <TouchableOpacity style={styles.quantityButton} activeOpacity={0.85}>
+          <TouchableOpacity style={styles.quantityButton} onPress={onIncrease} activeOpacity={0.85}>
             <Ionicons name="add" size={14} color={colors.text} />
           </TouchableOpacity>
         </View>
@@ -219,7 +204,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 20,
-    paddingBottom: 120, // Suficiente espacio para la barra flotante
+    paddingBottom: 120,
   },
   header: {
     flexDirection: "row",
@@ -229,6 +214,11 @@ const styles = StyleSheet.create({
   headerTextBlock: {
     flex: 1,
     marginLeft: 12,
+  },
+  headerActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   headerMini: {
     fontSize: 12,
@@ -403,6 +393,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "800",
     color: colors.text,
+    flex: 1,
+    marginRight: 8,
   },
   quantityBox: {
     flexDirection: "row",
@@ -420,11 +412,44 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   quantityText: {
-    minWidth: 22,
+    minWidth: 30,
     textAlign: "center",
     fontSize: 14,
     fontWeight: "800",
     color: colors.text,
+  },
+  emptyState: {
+    backgroundColor: "#fff",
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 30,
+    alignItems: "center",
+    marginBottom: 14,
+  },
+  emptyTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: colors.text,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  emptySubtitle: {
+    fontSize: 13,
+    color: colors.textSoft,
+    textAlign: "center",
+    lineHeight: 20,
+    marginBottom: 16,
+  },
+  browseButton: {
+    backgroundColor: colors.primary,
+    borderRadius: 999,
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+  },
+  browseButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "800",
   },
   totalCard: {
     marginTop: 6,
@@ -479,6 +504,9 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingVertical: 15,
     alignItems: "center",
+  },
+  disabledButton: {
+    opacity: 0.55,
   },
   checkoutButtonText: {
     color: "#fff",

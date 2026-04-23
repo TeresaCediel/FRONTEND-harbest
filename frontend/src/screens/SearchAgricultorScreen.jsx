@@ -9,9 +9,10 @@ import {
   View,
 } from "react-native";
 import ScreenContainer from "../components/common/ScreenContainer";
+import { ROLE_THEMES } from "../styles/roleThemes";
 
 export default function SearchAgricultorScreen({ navigation }) {
-  const FarmerColor = "#d25e2c";
+  const FarmerColor = ROLE_THEMES.farmer.primary;
   const [SearchQuery, SetSearchQuery] = useState("");
 
   return (
@@ -20,7 +21,7 @@ export default function SearchAgricultorScreen({ navigation }) {
         {/* HEADER CON BUSCADOR ACTIVO */}
         <View style={Styles.HeaderRow}>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate("HomeAgricultor")}
             style={Styles.BackButton}
           >
             <Ionicons name="arrow-back" size={24} color="#2D2D2D" />
@@ -32,7 +33,7 @@ export default function SearchAgricultorScreen({ navigation }) {
               style={Styles.Input}
               placeholder="Buscar tomate, aguacate..."
               placeholderTextColor="#8A8A8A"
-              autoFocus={true} // Se abre el teclado automáticamente al entrar
+              autoFocus={true}
               value={SearchQuery}
               onChangeText={SetSearchQuery}
             />
@@ -77,14 +78,14 @@ export default function SearchAgricultorScreen({ navigation }) {
 const SearchResultItem = ({ Name, Qty, Price, IsEmpty }) => (
   <TouchableOpacity style={Styles.ResultCard} activeOpacity={0.7}>
     <View style={Styles.ResultIcon}>
-      <Ionicons name="leaf-outline" size={20} color="#d25e2c" />
+      <Ionicons name="leaf-outline" size={20} color={ROLE_THEMES.farmer.primary} />
     </View>
     <View style={{ flex: 1 }}>
       <Text style={Styles.ResultName}>{Name}</Text>
       <Text
         style={[
           Styles.ResultQty,
-          IsEmpty && { color: "#d25e2c", fontWeight: "700" },
+          IsEmpty && { color: ROLE_THEMES.farmer.primary, fontWeight: "700" },
         ]}
       >
         {Qty}
@@ -101,7 +102,7 @@ const SearchResultItem = ({ Name, Qty, Price, IsEmpty }) => (
 );
 
 const Styles = StyleSheet.create({
-  MainContainer: { flex: 1, backgroundColor: "#F7F8F4", paddingTop: 20 },
+  MainContainer: { flex: 1, backgroundColor: ROLE_THEMES.farmer.background, paddingTop: 20 },
   HeaderRow: {
     flexDirection: "row",
     alignItems: "center",

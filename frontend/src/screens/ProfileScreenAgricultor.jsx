@@ -8,9 +8,9 @@ import {
   ScrollView,
 } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import colors from "../styles/colors";
 import ScreenContainer from "../components/common/ScreenContainer";
-import FarmerTabBar from "../components/common/FarmerTabBar"; // <-- IMPORTAMOS NUESTRA BARRA
+import FarmerTabBar from "../components/common/FarmerTabBar";
+import { ROLE_THEMES } from "../styles/roleThemes";
 
 export default function ProfileScreenAgricultor({ navigation }) {
   return (
@@ -25,7 +25,7 @@ export default function ProfileScreenAgricultor({ navigation }) {
             <View style={styles.headerTopRow}>
               <TouchableOpacity
                 style={styles.iconButton}
-                onPress={() => navigation.goBack()}
+                onPress={() => navigation.navigate("HomeAgricultor")}
                 activeOpacity={0.85}
               >
                 <Ionicons
@@ -35,16 +35,18 @@ export default function ProfileScreenAgricultor({ navigation }) {
                 />
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.logoWrap}
-                onPress={() => navigation.navigate("HomeAgricultor")} // <-- FUGA SELLADA (Iba a 'Home')
-                activeOpacity={0.85}
-              >
-                <Image
-                  source={require("../../assets/images/agricultor-logo.png")}
-                  style={styles.headerLogo}
-                />
-              </TouchableOpacity>
+              <View style={styles.headerActions}>
+                <TouchableOpacity
+                  style={styles.logoWrap}
+                  onPress={() => navigation.navigate("HomeAgricultor")}
+                  activeOpacity={0.85}
+                >
+                  <Image
+                    source={require("../../assets/images/agricultor-logo.png")}
+                    style={styles.headerLogo}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
 
             <Text style={styles.headerTitle}>Panel del agricultor</Text>
@@ -213,19 +215,19 @@ const ProfileOption = ({
 };
 
 const stylesConst = {
-  bg: "#F6F4EE",
+  bg: ROLE_THEMES.farmer.background,
   card: "#FFFFFF",
-  primary: "#6E8B3D",
-  primarySoft: "#EEF3E4",
-  primaryDark: "#4F672A",
-  earth: "#E8DFC8",
-  earthSoft: "#F3EBD7",
-  highlight: "#F3F0E2",
+  primary: ROLE_THEMES.farmer.primary,
+  primarySoft: ROLE_THEMES.farmer.primarySoft,
+  primaryDark: ROLE_THEMES.farmer.primaryDark,
+  earth: "#F0C4B0",
+  earthSoft: "#FBE5DC",
+  highlight: "#FBE5DC",
   border: "#E6E1D5",
   textDark: "#3D3A34",
   textSoft: "#7B766D",
-  secondary: "#d25e2c",
-  secondarySoft: "#feeddd",
+  secondary: ROLE_THEMES.farmer.primary,
+  secondarySoft: ROLE_THEMES.farmer.primarySoft,
 };
 
 const styles = StyleSheet.create({
@@ -249,6 +251,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 18,
+  },
+  headerActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
 
   iconButton: {

@@ -94,7 +94,7 @@ export default function OrdersScreen({ navigation }) {
             <Ionicons name="cart-outline" size={20} color="#8A8A8A" />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <TouchableOpacity onPress={() => navigation.navigate('ProfileUser')}>
             <Ionicons name="person-outline" size={20} color="#8A8A8A" />
           </TouchableOpacity>
         </View>
